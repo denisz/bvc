@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "cocos2d::untrackRef(cocos2d::Ref*):CCRef.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "common::Reaction::handlerReceivedMessage(internal::network::Response*):Reaction.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "converterToRapidMap(std::__1::unordered_map&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, cocos2d::Value, std::__1::hash&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::equal_to&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::allocator&lt;std::__1::pair&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const, cocos2d::Value&gt; &gt; &gt; const&amp;):Utils.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "str.c_str()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "game::Object::setObject(cocos2d::Value&amp;, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;):Object.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "value.asString()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "common::CommandRunner::runCommandAsync(common::RequestCommand&amp;):CommandRunner.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "kCachePolicyNetworkElseCache">
+            </PersistentString>
+            <PersistentString
+               value = "BFError::NONE">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Bolts::BFTask&lt;internal::network::Response&gt;::trySetResult(internal::network::Response&amp;):BFTask.hpp">
+      </ContextState>
+      <ContextState
+         contextName = "Bolts::BFExecutor::pool():BFExecutor.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "common::CommandRunner::runCommandAsync(common::RequestCommand&amp;)::$_3::operator()(Bolts::BFTask&lt;internal::network::Response&gt;*) const:CommandRunner.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "cacheHash">
+            </PersistentString>
+            <PersistentString
+               value = "res-&gt;source">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "non-virtual thunk to common::Reaction::onReceivedMessage(internal::network::Response&amp;):Reaction.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Bolts::BFTask&lt;internal::network::Response&gt;::continueWithSuccessBlock(std::__1::function&lt;Bolts::BFTask&lt;internal::network::Response&gt;* (Bolts::BFTask&lt;internal::network::Response&gt;*)&gt; const&amp;)::&apos;lambda&apos;(Bolts::BFTask&lt;internal::network::Response&gt;*)::operator()(Bolts::BFTask&lt;internal::network::Response&gt;*) const:BFTask.hpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "_block">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "converterValue(rapidjson::GenericValue&lt;rapidjson::UTF8&lt;char&gt;, rapidjson::MemoryPoolAllocator&lt;rapidjson::CrtAllocator&gt; &gt;&amp;):Utils.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "value.GetInt()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "printValueMap(std::__1::unordered_map&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, cocos2d::Value, std::__1::hash&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::equal_to&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::allocator&lt;std::__1::pair&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const, cocos2d::Value&gt; &gt; &gt; const&amp;):Utils.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "item.first">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "internal::network::NetworkClient::initWithTransport(internal::network::TransportProtocol*):NetworkClient.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "game::User::setCurrentUser(game::User*):User.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "_currentUser">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "common::FileUtils::isFileExist(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;):FileUtils.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "common::Reaction::onReceivedMessage(internal::network::Response*):Reaction.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Bolts::BFTaskCompletionAfter&lt;Test&gt;::trySetResult(Test&amp;):BFTaskCompletionAfter.hpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "_counter">
+            </PersistentString>
+            <PersistentString
+               value = "_maxCounter">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "internal::network::NetworkClient::sendMessage(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;):NetworkClient.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "common::Reaction::onReceivedMessage(internal::network::Response&amp;):Reaction.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "common::Router::worker(std::__1::vector&lt;common::Router::Handler, std::__1::allocator&lt;common::Router::Handler&gt; &gt;&amp;, internal::network::Response&amp;):Router.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "worker.path">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "common::CommandRunner::processMessage(internal::network::Response&amp;):CommandRunner.cpp">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
