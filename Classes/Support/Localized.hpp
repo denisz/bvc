@@ -16,22 +16,18 @@
 
 #define kLocalizedStringNotFound "notFound"
 
-USING_NS_CC;
-
-using namespace std;
-
 class Localized {
-    typedef map<string, string> StringStringMap;
+    typedef std::map<std::string, std::string> StringStringMap;
 private:
     virtual ~Localized();
     Localized();
 public:
-    static string getString(const string &key);
+    static std::string getString(const std::string &key);
     static void purge();
     static void load();
     
-    static string languageShortNameForType(LanguageType type);
-    static bool isLanguageSupported(LanguageType language);
+    static std::string languageShortNameForType(cocos2d::LanguageType type);
+    static bool isLanguageSupported(cocos2d::LanguageType language);
 private:
     StringStringMap strings;
     static Localized *__sharedInstance;

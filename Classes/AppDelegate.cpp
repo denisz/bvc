@@ -24,7 +24,6 @@ void AppDelegate::initGLContextAttrs()
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
-    // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
@@ -39,26 +38,28 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setDisplayStats(true);
     director->setAnimationInterval(1.0 / 60);
 
-    GameConfig::sharedInstance()->load();
-    GameConfig::sharedInstance()->loadFilePaths();
-    Localized::load();
-    
     ServiceLocator::create();
-    auto starter = StarterController::create();
-    window = UIWindow::create();
-    window->setRootViewController(starter->getViewController());
-    director->runWithScene(window->scene());
     
+    const auto starter  = StarterController::create();
+    const auto root     = RootController::getInstance();
+    const auto rootVC   = root->getViewController();
+    
+    root->push_front(starter);
+    
+    window = UIKit::UIWindow::create();
+    window->setRootViewController(rootVC);
+    director->runWithScene(window->scene());
+
     return true;
 }
 
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
-//     SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+     CocosDenshion::SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 }
 
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
-    // SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+     CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 }

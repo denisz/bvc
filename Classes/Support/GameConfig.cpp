@@ -7,8 +7,6 @@
 //
 #include "GameConfig.hpp"
 
-using namespace std;
-
 GameConfig * GameConfig::__sharedInstance = nullptr;
 
 GameConfig::~GameConfig() {}
@@ -34,7 +32,7 @@ void GameConfig::save() {
 void GameConfig::loadFilePaths() {
     unsigned char *t = nullptr;
     ssize_t configDataSize = 0;
-    t = (FileUtils::getInstance()->getFileData("config.json", "r", &configDataSize));
+    t = (cocos2d::FileUtils::getInstance()->getFileData("config.json", "r", &configDataSize));
     
     char *configData = new char[configDataSize + 1];
     memcpy(configData, t, configDataSize);
@@ -43,20 +41,20 @@ void GameConfig::loadFilePaths() {
     delete[] t;
     t = NULL;
     
-    LanguageType currentLanguage = Application::getInstance()->getCurrentLanguage();
-    string languagePrefix = Localized::languageShortNameForType(currentLanguage);
+    auto currentLanguage = cocos2d::Application::getInstance()->getCurrentLanguage();
+    auto languagePrefix = Localized::languageShortNameForType(currentLanguage);
     
-    auto addResourcePath = [=](const string &path) {
-        FileUtils::getInstance()->addSearchPath((path + languagePrefix).c_str());
-        FileUtils::getInstance()->addSearchPath(path.c_str());
+    auto addResourcePath = [=](const std::string &path) {
+        cocos2d::FileUtils::getInstance()->addSearchPath((path + languagePrefix).c_str());
+        cocos2d::FileUtils::getInstance()->addSearchPath(path.c_str());
     };
     
-    Size frameSize = Director::getInstance()->getOpenGLView()->getFrameSize();
+    auto frameSize = cocos2d::Director::getInstance()->getOpenGLView()->getFrameSize();
     
     rapidjson::Document configDoc;
     configDoc.Parse<0>(configData);
     
-    string layoutBaseDimensionType = configDoc["layoutBaseDimension"].GetString();
+    std::string layoutBaseDimensionType = configDoc["layoutBaseDimension"].GetString();
     
     float frameBaseDimension = frameSize.height;
     
@@ -92,10 +90,13 @@ void GameConfig::loadFilePaths() {
                         policy = ResolutionPolicy::FIXED_WIDTH;
                     }
                     
-                    Director::getInstance()->getOpenGLView()->setDesignResolutionSize(layoutWidth, layoutHeight, policy);
-                    Director::getInstance()->setContentScaleFactor(requiredBaseDimension / designLayoutBaseDimension);
+                    const auto director = cocos2d::Director::getInstance();
                     
-                    Size visibleSize = Director::getInstance()->getVisibleSize();
+                    director->getOpenGLView()->setDesignResolutionSize(layoutWidth, layoutHeight, policy);
+                    director->setContentScaleFactor(requiredBaseDimension / designLayoutBaseDimension);
+                    
+                    const auto visibleSize = director->getVisibleSize();
+                    
                     this->setVisibleOrigin({static_cast<float>((visibleSize.width - layoutWidth) / 2.0), static_cast<float>((visibleSize.height - layoutHeight) / 2.0)});
                     //
                     
@@ -105,7 +106,7 @@ void GameConfig::loadFilePaths() {
                         
                         if(entryToLoad.IsObject()) {
                             for(auto it = entryToLoad["paths"].Begin(); it != entryToLoad["paths"].End(); ++it) {
-                                string path = it->GetString();
+                                std::string path = it->GetString();
                                 addResourcePath(path);
                             }
                         }
@@ -123,7 +124,7 @@ void GameConfig::loadFilePaths() {
     const auto &sharedPathsArray = configDoc["sharedPaths"];
     if(sharedPathsArray.IsArray()) {
         for(auto it = sharedPathsArray.Begin(); it != sharedPathsArray.End(); ++it) {
-            string path = it->GetString();
+            std::string path = it->GetString();
             addResourcePath(path);
         }
     }
@@ -131,18 +132,18 @@ void GameConfig::loadFilePaths() {
     delete[] configData;
 }
 
-Size GameConfig::getDesignLayoutSize() {
+cocos2d::Size GameConfig::getDesignLayoutSize() {
     return this->designLayoutSize;
 }
 
-Point GameConfig::getVisibleOrigin() {
+cocos2d::Point GameConfig::getVisibleOrigin() {
     return this->visibleOrigin;
 }
 
-void GameConfig::setDesignLayoutSize(const Size &size) {
+void GameConfig::setDesignLayoutSize(const cocos2d::Size &size) {
     this->designLayoutSize = size;
 }
 
-void GameConfig::setVisibleOrigin(const Point &point) {
+void GameConfig::setVisibleOrigin(const cocos2d::Point &point) {
     this->visibleOrigin = point;
 }

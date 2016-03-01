@@ -3,18 +3,21 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "cocos2d::untrackRef(cocos2d::Ref*):CCRef.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "common::Reaction::handlerReceivedMessage(internal::network::Response*):Reaction.cpp">
-      </ContextState>
-      <ContextState
          contextName = "converterToRapidMap(std::__1::unordered_map&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, cocos2d::Value, std::__1::hash&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::equal_to&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::allocator&lt;std::__1::pair&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const, cocos2d::Value&gt; &gt; &gt; const&amp;):Utils.cpp">
          <PersistentStrings>
             <PersistentString
                value = "str.c_str()">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "common::Reaction::handlerReceivedMessage(internal::network::Response*):Reaction.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "common::CommandRunner::processMessage(internal::network::Response&amp;):CommandRunner.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "game::RootController::setRoot(game::GameController*, bool):RootController.cpp">
       </ContextState>
       <ContextState
          contextName = "game::Object::setObject(cocos2d::Value&amp;, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;):Object.cpp">
@@ -42,6 +45,9 @@
          contextName = "Bolts::BFExecutor::pool():BFExecutor.cpp">
       </ContextState>
       <ContextState
+         contextName = "UIKit::UINavigationControllerTransitionManager::animateTransition(UIKit::UIViewControllerContextTransitioning*):UINavigationController.cpp">
+      </ContextState>
+      <ContextState
          contextName = "common::CommandRunner::runCommandAsync(common::RequestCommand&amp;)::$_3::operator()(Bolts::BFTask&lt;internal::network::Response&gt;*) const:CommandRunner.cpp">
          <PersistentStrings>
             <PersistentString
@@ -49,6 +55,14 @@
             </PersistentString>
             <PersistentString
                value = "res-&gt;source">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "UIKit::UINavigationController::pushViewController(UIKit::UIViewController*, bool)::$_0::operator()(Bolts::BFTask&lt;Bolts::BFBool&gt;*) const:UINavigationController.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "this">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -81,6 +95,14 @@
       </ContextState>
       <ContextState
          contextName = "internal::network::NetworkClient::initWithTransport(internal::network::TransportProtocol*):NetworkClient.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "UIKit::UINavigationControllerTransitionManager::animateTransition(UIKit::UIViewControllerContextTransitioning*)::$_0::operator()() const:UINavigationController.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "transitionContext">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "game::User::setCurrentUser(game::User*):User.cpp">
@@ -122,7 +144,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "common::CommandRunner::processMessage(internal::network::Response&amp;):CommandRunner.cpp">
+         contextName = "cocos2d::untrackRef(cocos2d::Ref*):CCRef.cpp">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

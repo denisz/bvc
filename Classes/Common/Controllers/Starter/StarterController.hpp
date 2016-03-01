@@ -10,7 +10,7 @@
 #define StarterController_hpp
 
 #include "stdafx.h"
-#include "GameController.hpp"
+#include "FactoryControllers.h"
 #include "StarterViewController.hpp"
 #include "User.hpp"
 
@@ -21,6 +21,7 @@ namespace game {
         virtual void loadViewController();
     private:
         void commandAuth(internal::network::Response* res);
+        void actionNext(internal::ActionsClient::Event* event);
         void processOpen();
     public:
         virtual bool init();

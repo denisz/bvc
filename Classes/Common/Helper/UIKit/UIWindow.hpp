@@ -14,7 +14,7 @@
 #include "ui/CocosGUI.h"
 #include "UIViewController.hpp"
 
-namespace game {
+namespace UIKit {
     class UIWindow: public UIViewController {
         cocos2d::Scene* _scene;
         UIViewController* _rootViewController;

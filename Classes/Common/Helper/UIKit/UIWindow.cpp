@@ -9,7 +9,7 @@
 #include "UIWindow.hpp"
 
 USING_NS_CC;
-using namespace game;
+using namespace UIKit;
 
 UIWindow::UIWindow()
 : _scene(nullptr) {

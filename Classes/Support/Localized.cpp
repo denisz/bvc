@@ -10,9 +10,9 @@
 
 Localized *Localized::__sharedInstance = nullptr;
 
-static LanguageType AvailableLanguages[] = {
-    LanguageType::ENGLISH,
-    LanguageType::RUSSIAN
+static cocos2d::LanguageType AvailableLanguages[] = {
+    cocos2d::LanguageType::ENGLISH,
+    cocos2d::LanguageType::RUSSIAN
 };
 
 Localized::~Localized() {
@@ -32,7 +32,7 @@ void Localized::load() {
     
     unsigned char *t = nullptr;
     ssize_t stringsDataSize = 0;
-    t = (FileUtils::getInstance()->getFileData("strings.json", "r", &stringsDataSize));
+    t = (cocos2d::FileUtils::getInstance()->getFileData("strings.json", "r", &stringsDataSize));
     
     char *stringsData = new char[stringsDataSize + 1];
     memcpy(stringsData, t, stringsDataSize);
@@ -47,10 +47,10 @@ void Localized::load() {
     const auto &stringsMap = stringsDoc["strings"];
     if(stringsMap.IsObject()) {
         for(auto it = stringsMap.MemberBegin(); it != stringsMap.MemberEnd(); ++it) {
-            string key = it->name.GetString();
-            string value = it->value.GetString();
+            auto key = it->name.GetString();
+            auto value = it->value.GetString();
             
-            __sharedInstance->strings.insert(make_pair(key, value));
+            __sharedInstance->strings.insert(std::make_pair(key, value));
         }
     }
     
@@ -62,7 +62,7 @@ void Localized::purge() {
     __sharedInstance = nullptr;
 }
 
-string Localized::getString(const string &key) {
+std::string Localized::getString(const std::string &key) {
     if(__sharedInstance == nullptr) {
         Localized::load();
     }
@@ -78,8 +78,8 @@ string Localized::getString(const string &key) {
     return kLocalizedStringNotFound;
 }
 
-bool Localized::isLanguageSupported(LanguageType language) {
-    for(LanguageType l: AvailableLanguages) {
+bool Localized::isLanguageSupported(cocos2d::LanguageType language) {
+    for(cocos2d::LanguageType l: AvailableLanguages) {
         if(l == language) {
             return true;
         }
@@ -88,10 +88,10 @@ bool Localized::isLanguageSupported(LanguageType language) {
     return false;
 }
 
-string Localized::languageShortNameForType(cocos2d::LanguageType type) {
-    string languagePrefix = "en";
+std::string Localized::languageShortNameForType(cocos2d::LanguageType type) {
+    auto languagePrefix = "en";
     switch(type) {
-        case LanguageType::ENGLISH:
+        case cocos2d::LanguageType::ENGLISH:
             languagePrefix = "en"; break;
             //        case LanguageType::CHINESE:
             //            languagePrefix = "zh"; break;
@@ -103,7 +103,7 @@ string Localized::languageShortNameForType(cocos2d::LanguageType type) {
             //            languagePrefix = "de"; break;
             //        case LanguageType::SPANISH:
             //            languagePrefix = "es"; break;
-        case LanguageType::RUSSIAN:
+        case cocos2d::LanguageType::RUSSIAN:
             languagePrefix = "ru"; break;
             //        case LanguageType::KOREAN:
             //            languagePrefix = "ko"; break;

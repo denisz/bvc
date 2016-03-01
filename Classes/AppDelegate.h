@@ -2,12 +2,10 @@
 #define  _APP_DELEGATE_H_
 
 #include "ServiceLocator.hpp"
-#include "StarterController.hpp"
-#include "UIWindow.hpp"
-#include "GameConfig.hpp"
-#include "Localized.hpp"
+#include "FactoryControllers.h"
+#include "UIKit.h"
 #include "cocos2d.h"
-
+#include "SimpleAudioEngine.h"
 /**
 @brief    The cocos2d Application.
 
@@ -20,7 +18,7 @@ public:
     
     virtual ~AppDelegate();
     
-    game::UIWindow* window;
+    UIKit::UIWindow* window;
     
     virtual void initGLContextAttrs();
 

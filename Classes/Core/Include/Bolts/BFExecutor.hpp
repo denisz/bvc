@@ -36,7 +36,7 @@ namespace Bolts {
     private:
         ThreadManager* _manager;
         BFThreadPool* _threadPool;
-        
+        BFSheduler* _threadSheduler;
         static std::mutex _lock;
         static BFExecutor* _defaultExecutor;
     public:
@@ -44,6 +44,7 @@ namespace Bolts {
         ~BFExecutor();
         BFThreadPool* pool();
         BFThreadPool* createPool(uint tCount = 3);
+        BFSheduler* sheduler();
         BFSheduler* createSheduler(uint tCount = 3);
         
         static BFExecutor* defaultExecutor (uint thCount = 3, uint tCount = 3) {

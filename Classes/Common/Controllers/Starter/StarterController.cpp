@@ -14,17 +14,19 @@ using namespace internal::network;
 bool StarterController::init() {
     GameController::init();
     
-    _router->command("pvp/created",
-                     BV_CALLBACK_1(StarterController::commandAuth, this) );
-
+    router()
+        ->command("pvp/created", BV_CALLBACK_1(StarterController::commandAuth, this));
+    
+    actions()
+        ->action("next", BV_CALLBACK_1(StarterController::actionNext, this));
+    
     ServiceLocator::network()->connect(kServerUrl);
     
     return true;
 }
 
 void StarterController::loadViewController() {
-    auto view = StarterViewController::create();
-    setView(view);
+    setView(StarterViewController::create());
 }
 
 void StarterController::processOpen() {
@@ -63,18 +65,6 @@ void StarterController::processOpen() {
             return nullptr;
         });
         
-//        Plugins::pvpController()->random();
-//        Plugins::pvpController()->createDefaultChallenge();
-        
-//        std::async([](){
-//            Plugins::pvpController()->hasCreated()->continueWithBlock([](CommandRunner::Handler *task)-> CommandRunner::Handler* {
-//                auto res = task->result();
-//                auto result = res->getBoolByPointerWithDefault("/params/result", false);
-//                std::cout << std::to_string(result) << std::endl;
-//                return nullptr;
-//            });
-//        });
-        
         return nullptr;
     });
 }
@@ -82,3 +72,12 @@ void StarterController::processOpen() {
 void StarterController::commandAuth(Response* res) {
     std::cout << "Command auth" << std::endl;
 }
+
+void StarterController::actionNext(internal::ActionsClient::Event* event) {
+    auto mainController = MainController::create();
+    auto rootController = RootController::getInstance();
+    rootController->setTop(mainController);
+    exit();
+}
+
+

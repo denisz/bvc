@@ -8,7 +8,7 @@
 
 #include "UIView.hpp"
 
-using namespace game;
+using namespace UIKit;
 
 bool UIView::init() {
     return Layout::init();

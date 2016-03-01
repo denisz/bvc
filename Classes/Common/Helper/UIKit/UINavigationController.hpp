@@ -13,35 +13,63 @@
 #include "UIViewController.hpp"
 
 
-namespace game {
+namespace UIKit {
+    
+    class UINavigationControllerTransitionManager: public UIViewControllerAnimatedTransitioning, public UIViewControllerTransitioningDelegate  {
+    private:
+        bool presenting;
+        UINavigationControllerTransitionManager();
+        virtual bool init();
+    public:
+        void animateTransition(UIViewControllerContextTransitioning* transitionContext);
+        time_t transitionDuration(UIViewControllerContextTransitioning* transitionContext);
+        
+        UIViewControllerAnimatedTransitioning* animationControllerForPresentedController(UIViewController* presented, UIViewController* presentingController, UIViewController* sourceController) {
+            presenting = true;
+            return this;
+        }
+        UIViewControllerAnimatedTransitioning* animationControllerForDismissedController(UIViewController* dismissed) {
+            presenting = false;
+            return this;
+        }
+        BV_CREATE_FUNC(UINavigationControllerTransitionManager);
+    };
+
+    
     class UINavigationController: public UIViewController {
     public:
-        enum class Operation {NONE, PUSH, POP};
         class Delegate {
             virtual void willShowViewController(UIViewController* viewController, bool animated) {};
             virtual void didShowViewController(UIViewController* viewController, bool animated) {};
         };
     private:
-        std::vector<UIViewController*> _stackControllers;
+        UIView* _navigationContainerView;
+        std::forward_list<UIViewController*> _stackControllers;
+        UIViewControllerTransitioningDelegate* _transitioningNavigationDelegate;
+        void setView(UIView* view);
+        void setNavigationTransition(UIViewControllerTransitioningDelegate* transitioningDelegate);
     protected:
         UINavigationController();
-        bool init();
+        virtual bool init();
+        virtual UIView* containerView();
+        UIViewControllerTransitioningDelegate* loadNavigationTransition();
+        
         bool initWithRootViewContorller(UIViewController* viewController);
     public:
         UIViewController* topViewController;
         UIViewController* visibleViewController;
-        std::vector<UIViewController*> viewControllers();
+        std::forward_list<UIViewController*> viewControllers();
         
         ~UINavigationController();
         Delegate* delegate;
-        void showViewController(UIViewController* viewController);
-        void pushViewController(UIViewController* viewController, bool animated);
+        UIViewController::Completion* pushViewController(UIViewController* viewController, bool animated);
         UIViewController* popViewControllerAnimated(bool animated);
+        UIViewController::Completion* setTopViewControllerAnimated(UIViewController* viewController,bool animated);
         std::vector<UIViewController*> popToRootViewControllerAnimated(bool animated);
         std::vector<UIViewController*> popToViewController(UIViewController* viewController, bool animated);
         
-        UINavigationController* create();
-        UINavigationController* createWithRootViewController(UIViewController* viewController);
+        static UINavigationController* create();
+        static UINavigationController* createWithRootViewController(UIViewController* viewController);
     };
 }
 

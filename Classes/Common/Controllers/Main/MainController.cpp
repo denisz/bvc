@@ -10,7 +10,12 @@
 
 
 using namespace game;
+using namespace UIKit;
 
 bool MainController::init() {
-    return true;
+    return GameController::init();
+}
+
+void MainController::loadViewController() {
+    setView(MainViewController::create());
 }

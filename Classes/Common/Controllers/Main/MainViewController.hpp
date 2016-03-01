@@ -9,12 +9,16 @@
 #ifndef MainViewController_hpp
 #define MainViewController_hpp
 
-#include <stdio.h>
+#include "stdafx.h"
 #include "UIViewController.hpp"
+#include "ServiceLocator.hpp"
 
 namespace game {
-    class MainViewController: public UIViewController {
-        
+    class MainViewController: public UIKit::UIViewController {
+    protected:
+        virtual void viewDidLoad();
+    public:
+        BV_CREATE_FUNC(MainViewController);
     };
 }
 #endif /* MainViewController_hpp */

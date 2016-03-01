@@ -10,17 +10,21 @@
 #define MainController_hpp
 
 #include "stdafx.h"
-#include "GameController.hpp"
+#include "FactoryControllers.h"
+#include "MainViewController.hpp"
 
 namespace game {
     class MainController: public GameController {
+    public:
         struct Options {};
         struct States  {};
     private:
         States _states;
         Options _options;
-    public:
+    protected:
+        virtual void loadViewController();
         virtual bool init();
+    public:
         BV_CREATE_FUNC(MainController);
     };
 }

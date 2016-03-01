@@ -10,10 +10,11 @@
 #define StarterViewController_hpp
 
 #include "stdafx.h"
-#include "BaseUIViewController.hpp"
+#include "UIViewController.hpp"
+#include "ServiceLocator.hpp"
 
 namespace game {
-    class StarterViewController: public game::BaseUIViewController {
+    class StarterViewController: public UIKit::UIViewController {
     protected:
         virtual void viewDidLoad();
     public:

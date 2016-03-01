@@ -11,27 +11,31 @@
 
 #include "stdafx.h"
 #include "NetworkController.hpp"
+#include "IActionController.hpp"
 #include "UIViewController.hpp"
 #include "Router.hpp"
+#include "Actions.hpp"
 
 namespace game {
-    class GameController: public NetworkController {
+    class GameController: public NetworkController, public IActionController {
     public:
         class Delegate {};
     protected:
         GameController();
         common::Router* _router;
-        UIViewController* _view;
+        UIKit::UIViewController* _view;
         virtual void processMessage(internal::network::Response& res);
         virtual void processError(internal::network::Response& res);
         virtual bool init();
         virtual void loadViewController();
     public:
         ~GameController();
+        void exit();
         Delegate* delegate;
+        common::Router* router();
         void log(const std::string& message);
-        void setView(UIViewController* view);
-        UIViewController* getViewController();
+        void setView(UIKit::UIViewController* view);
+        UIKit::UIViewController* getViewController();
         BV_CREATE_FUNC(GameController);
     };
 }

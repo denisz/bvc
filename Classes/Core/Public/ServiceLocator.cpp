@@ -17,11 +17,16 @@ NetworkClient* ServiceLocator::_networkClient;
 Storage* ServiceLocator::_storage;
 AwesomeCache* ServiceLocator:: _cache;
 EventuallyRequests* ServiceLocator::_eventually;
+ActionsClient*  ServiceLocator::_actionsClient;
 
 void ServiceLocator::create() {
     if (ServiceLocator::isCreated) return;
     ServiceLocator::isCreated = true;
 
+    GameConfig::sharedInstance()->load();
+    GameConfig::sharedInstance()->loadFilePaths();
+    Localized::load();
+    
     FileUtils::sharedInstance()->load();
     
     auto transport = WebSocketTransport::create();
@@ -32,15 +37,26 @@ void ServiceLocator::create() {
     _eventually = EventuallyRequests::create();
     
     _cache = AwesomeCache::create();
+    
+    _actionsClient = ActionsClient::create();
 }
 
 NetworkClient* ServiceLocator::network() {
     return ServiceLocator::_networkClient;
 }
 
+ActionsClient* ServiceLocator::actionsClient() {
+    return ServiceLocator::_actionsClient;
+}
+
+EventuallyRequests*  ServiceLocator::eventually() {
+    return ServiceLocator::_eventually;
+}
+
 Storage* ServiceLocator::storage() {
     return ServiceLocator::_storage;
 }
+
 
 AwesomeCache* ServiceLocator:: cache() {
     return ServiceLocator::_cache;

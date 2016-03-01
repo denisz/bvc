@@ -139,6 +139,7 @@ namespace Bolts {
         if (!completed) {
             _callbacks.push_back(std::bind(&BFTask<T>::worker, this, block));
         }
+        
         _mutex.unlock();
         
         if (completed) {

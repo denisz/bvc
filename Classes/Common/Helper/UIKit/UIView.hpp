@@ -13,7 +13,7 @@
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 
-namespace game {
+namespace UIKit {
     class UIView: public cocos2d::ui::Layout {
     protected:
         virtual bool init();

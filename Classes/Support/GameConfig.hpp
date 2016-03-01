@@ -13,21 +13,19 @@
 #include <string>
 #include "Localized.hpp"
 
-USING_NS_CC;
-
 class GameConfig {
 private:
     GameConfig();
-    void setDesignLayoutSize(const Size &size);
-    void setVisibleOrigin(const Point &point);
+    void setDesignLayoutSize(const cocos2d::Size &size);
+    void setVisibleOrigin(const cocos2d::Point &point);
 public:
     ~GameConfig();
     
     void load();
     void save();
     
-    Size getDesignLayoutSize();
-    Point getVisibleOrigin();
+    cocos2d::Size getDesignLayoutSize();
+    cocos2d::Point getVisibleOrigin();
     
     void loadFilePaths();
     
@@ -35,8 +33,8 @@ public:
 private:
     static GameConfig *__sharedInstance;
     
-    Point visibleOrigin;
-    Size designLayoutSize;
+    cocos2d::Point visibleOrigin;
+    cocos2d::Size designLayoutSize;
 };
 
 

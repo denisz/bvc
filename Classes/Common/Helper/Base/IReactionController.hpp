@@ -15,8 +15,6 @@
 namespace game {
     class IReactionController: public common::Reaction::Delegate {
     protected:
-        common::Reaction* _reaction;
-        
         virtual void processMessage(internal::network::Response& res);
         virtual void processError(internal::network::Response& res);
         virtual void processClose();
@@ -24,8 +22,9 @@ namespace game {
         virtual void didSubscribe();
         virtual void didUnsubscribe();
         
-        bool _autoSubscribe;
+        bool _autoSubscribeReaction;
     private:
+        common::Reaction* _reaction;
     public:
         IReactionController();
         ~IReactionController();

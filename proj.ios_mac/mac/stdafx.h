@@ -15,6 +15,7 @@
 #include <future>
 #include <thread>
 #include <map>
+#include <forward_list>
 
 #include "Constants.h"
 #include "Core.h"
@@ -32,6 +33,7 @@
 //Reference counting
 #include "AIRef.h"
 #include "ValueMap.h"
+#include "Error.hpp"
 
 //task manager
 #include "ThreadPool.hh"

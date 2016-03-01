@@ -13,7 +13,7 @@ using namespace common;
 
 IReactionController::IReactionController()
 : _reaction(nullptr)
-, _autoSubscribe(true) {
+, _autoSubscribeReaction(true) {
 
 }
 
@@ -32,7 +32,7 @@ bool IReactionController::initWithReaction(Reaction* reaction) {
     _reaction->delegate = this;
     CC_SAFE_RETAIN(_reaction);
     
-    if (_autoSubscribe) {
+    if (_autoSubscribeReaction) {
         subscribe();
     }
     
