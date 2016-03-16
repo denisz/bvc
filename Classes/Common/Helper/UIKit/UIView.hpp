@@ -11,14 +11,20 @@
 
 #include "stdafx.h"
 #include "cocos2d.h"
+#include "GCD.hpp"
 #include "ui/CocosGUI.h"
+#include "extensions/cocos-ext.h"
 
 namespace UIKit {
     class UIView: public cocos2d::ui::Layout {
     protected:
-        virtual bool init();
+        virtual void viewDidLoad();
     public:
+        virtual bool init();
+        virtual bool initWithSize(const cocos2d::Size &contentSize);
+        
         BV_CREATE_FUNC(UIView)
+        BV_CREATE_FUNC_WITH_SIZE(UIView);
     };
 }
 

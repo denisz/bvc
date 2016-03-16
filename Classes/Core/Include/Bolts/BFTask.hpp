@@ -40,7 +40,6 @@ namespace Bolts {
         BFTask();
         ~BFTask();
         BFTask<T>* _continueTask;
-        unsigned int countThread = 1;
         
         static BFTask<T>* taskWithResult(T &result);
         static BFTask<T>* taskWithError(BFError &error);
@@ -90,7 +89,6 @@ namespace Bolts {
             return nullptr;
         }
     }
-
     
     template<class T>
     bool BFTask<T> ::init() {
@@ -124,7 +122,8 @@ namespace Bolts {
     }
 
 
-    template<class T> BFTask<T>* BFTask<T> ::continueWithBlock(const BFTaskHandler &block) {
+    template<class T>
+    BFTask<T>* BFTask<T> ::continueWithBlock(const BFTaskHandler &block) {
         std::lock_guard<std::mutex> lock(_mutex);
         
         bool completed;
@@ -143,6 +142,7 @@ namespace Bolts {
         _mutex.unlock();
         
         if (completed) {
+            CC_SAFE_RETAIN(this);
             worker(block);
         }
         
@@ -198,7 +198,9 @@ namespace Bolts {
                     auto error = task->error();
                     _ct->trySetError(error);
                 }
-            } 
+            }
+            
+            CC_SAFE_RELEASE(task);
         };
         
         if (resultTask != nullptr) {
@@ -254,7 +256,9 @@ namespace Bolts {
     template<class T>
     void BFTask<T> ::runContinuations() {
         auto pool = BFExecutor::defaultExecutor()->pool();
+        
         for (auto worker: _callbacks) {
+            CC_SAFE_RETAIN(this);
             pool->addTask(worker);
         }
         

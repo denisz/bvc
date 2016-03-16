@@ -3,27 +3,60 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "converterToRapidMap(std::__1::unordered_map&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, cocos2d::Value, std::__1::hash&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::equal_to&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::allocator&lt;std::__1::pair&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const, cocos2d::Value&gt; &gt; &gt; const&amp;):Utils.cpp">
+         contextName = "Bolts::BFTaskCompletionAfter&lt;Test&gt;::trySetResult(Test&amp;):BFTaskCompletionAfter.hpp">
          <PersistentStrings>
             <PersistentString
-               value = "str.c_str()">
+               value = "_counter">
+            </PersistentString>
+            <PersistentString
+               value = "_maxCounter">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "common::Reaction::handlerReceivedMessage(internal::network::Response*):Reaction.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "common::CommandRunner::processMessage(internal::network::Response&amp;):CommandRunner.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "game::RootController::setRoot(game::GameController*, bool):RootController.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "game::Object::setObject(cocos2d::Value&amp;, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;):Object.cpp">
+         contextName = "common::CommandRunner::runCommandAsync(common::RequestCommand&amp;)::$_3::operator()(Bolts::BFTask&lt;internal::network::Response&gt;*) const:CommandRunner.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "value.asString()">
+               value = "cacheHash">
+            </PersistentString>
+            <PersistentString
+               value = "res-&gt;source">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "common::Router::worker(std::__1::vector&lt;common::Router::Handler, std::__1::allocator&lt;common::Router::Handler&gt; &gt;&amp;, internal::network::Response&amp;):Router.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "worker.path">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "internal::network::NetworkClient::sendMessage(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;):NetworkClient.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Bolts::BFExecutor::pool():BFExecutor.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "common::Reaction::onReceivedMessage(internal::network::Response&amp;):Reaction.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "rapidjson::GenericDocument&lt;rapidjson::UTF8&lt;char&gt;, rapidjson::MemoryPoolAllocator&lt;rapidjson::CrtAllocator&gt;, rapidjson::CrtAllocator&gt;::Parse(char const*):document.h">
+      </ContextState>
+      <ContextState
+         contextName = "UIKit::UINavigationController::popToViewController(UIKit::UIViewController*, bool):UINavigationController.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "_stackControllers">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "UIKit::UIViewControllerAnimatedTransitioning::animationEnded():UIViewController.hpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "_context">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -39,22 +72,33 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "common::CommandRunner::processMessage(internal::network::Response&amp;):CommandRunner.cpp">
+      </ContextState>
+      <ContextState
          contextName = "Bolts::BFTask&lt;internal::network::Response&gt;::trySetResult(internal::network::Response&amp;):BFTask.hpp">
       </ContextState>
       <ContextState
-         contextName = "Bolts::BFExecutor::pool():BFExecutor.cpp">
+         contextName = "UIKit::UINavigationControllerTransitionManager::animateTransition(UIKit::UIViewControllerContextTransitioning*)::$_0::operator()() const:UINavigationController.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "toView">
+            </PersistentString>
+            <PersistentString
+               value = "transitionContext">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "cocos2d::untrackRef(cocos2d::Ref*):CCRef.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "UIKit::UINavigationController::pushViewController(UIKit::UIViewController*, bool):UINavigationController.cpp">
       </ContextState>
       <ContextState
          contextName = "UIKit::UINavigationControllerTransitionManager::animateTransition(UIKit::UIViewControllerContextTransitioning*):UINavigationController.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "common::CommandRunner::runCommandAsync(common::RequestCommand&amp;)::$_3::operator()(Bolts::BFTask&lt;internal::network::Response&gt;*) const:CommandRunner.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "cacheHash">
-            </PersistentString>
-            <PersistentString
-               value = "res-&gt;source">
+               value = "toVC">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -67,7 +111,12 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "non-virtual thunk to common::Reaction::onReceivedMessage(internal::network::Response&amp;):Reaction.cpp">
+         contextName = "UIKit::UINavigationController::popViewControllerAnimated(bool)::$_0::operator()(Bolts::BFTask&lt;Bolts::BFBool&gt;*) const:UINavigationController.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "viewController">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "Bolts::BFTask&lt;internal::network::Response&gt;::continueWithSuccessBlock(std::__1::function&lt;Bolts::BFTask&lt;internal::network::Response&gt;* (Bolts::BFTask&lt;internal::network::Response&gt;*)&gt; const&amp;)::&apos;lambda&apos;(Bolts::BFTask&lt;internal::network::Response&gt;*)::operator()(Bolts::BFTask&lt;internal::network::Response&gt;*) const:BFTask.hpp">
@@ -78,12 +127,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "converterValue(rapidjson::GenericValue&lt;rapidjson::UTF8&lt;char&gt;, rapidjson::MemoryPoolAllocator&lt;rapidjson::CrtAllocator&gt; &gt;&amp;):Utils.cpp">
+         contextName = "UIKit::UINavigationController::setTopViewControllerAnimated(UIKit::UIViewController*, bool)::$_2::operator()(Bolts::BFTask&lt;Bolts::BFBool&gt;*) const:UINavigationController.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "value.GetInt()">
+               value = "viewController">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "common::Reaction::onReceivedMessage(internal::network::Response*):Reaction.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "common::Reaction::handlerReceivedMessage(internal::network::Response*):Reaction.cpp">
       </ContextState>
       <ContextState
          contextName = "printValueMap(std::__1::unordered_map&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, cocos2d::Value, std::__1::hash&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::equal_to&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::allocator&lt;std::__1::pair&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const, cocos2d::Value&gt; &gt; &gt; const&amp;):Utils.cpp">
@@ -94,13 +149,44 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "internal::network::NetworkClient::initWithTransport(internal::network::TransportProtocol*):NetworkClient.cpp">
+         contextName = "UIKit::UINavigationController::clear():UINavigationController.cpp">
       </ContextState>
       <ContextState
-         contextName = "UIKit::UINavigationControllerTransitionManager::animateTransition(UIKit::UIViewControllerContextTransitioning*)::$_0::operator()() const:UINavigationController.cpp">
+         contextName = "converterValue(rapidjson::GenericValue&lt;rapidjson::UTF8&lt;char&gt;, rapidjson::MemoryPoolAllocator&lt;rapidjson::CrtAllocator&gt; &gt;&amp;):Utils.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "transitionContext">
+               value = "value.GetInt()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "non-virtual thunk to common::Reaction::onReceivedMessage(internal::network::Response&amp;):Reaction.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "common::FileUtils::isFileExist(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;):FileUtils.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "game::RootController::setRoot(game::GameController*, bool):RootController.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "UIKit::UIViewControllerContextTransitioning::~UIViewControllerContextTransitioning():UIViewController.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "_from">
+            </PersistentString>
+            <PersistentString
+               value = "_to">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "internal::network::NetworkClient::onMessage(internal::network::TransportProtocol const*, internal::network::TransportProtocol::Data&amp;):NetworkClient.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "UIKit::UINavigationController::popToViewController(UIKit::UIViewController*, bool)::$_1::operator()(Bolts::BFTask&lt;Bolts::BFBool&gt;*) const:UINavigationController.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "viewController">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -113,38 +199,71 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "common::FileUtils::isFileExist(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;):FileUtils.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "common::Reaction::onReceivedMessage(internal::network::Response*):Reaction.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "Bolts::BFTaskCompletionAfter&lt;Test&gt;::trySetResult(Test&amp;):BFTaskCompletionAfter.hpp">
+         contextName = "UIKit::UIViewControllerAnimatedTransitioning::animationEndedWithContext(UIKit::UIViewControllerContextTransitioning*):UIViewController.hpp">
          <PersistentStrings>
             <PersistentString
-               value = "_counter">
-            </PersistentString>
-            <PersistentString
-               value = "_maxCounter">
+               value = "_context">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "internal::network::NetworkClient::sendMessage(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;):NetworkClient.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "common::Reaction::onReceivedMessage(internal::network::Response&amp;):Reaction.cpp">
-      </ContextState>
-      <ContextState
-         contextName = "common::Router::worker(std::__1::vector&lt;common::Router::Handler, std::__1::allocator&lt;common::Router::Handler&gt; &gt;&amp;, internal::network::Response&amp;):Router.cpp">
+         contextName = "converterToRapidMap(std::__1::unordered_map&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;, cocos2d::Value, std::__1::hash&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::equal_to&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; &gt;, std::__1::allocator&lt;std::__1::pair&lt;std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const, cocos2d::Value&gt; &gt; &gt; const&amp;):Utils.cpp">
          <PersistentStrings>
             <PersistentString
-               value = "worker.path">
+               value = "str.c_str()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "cocos2d::untrackRef(cocos2d::Ref*):CCRef.cpp">
+         contextName = "Bolts::BFTask&lt;Bolts::BFBool&gt;::~BFTask():BFTask.hpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "_continueTask">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "game::DataSourceViewControllerReload::reloadRun():DataSourceController.hpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "reloadCallback">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "internal::network::NetworkClient::initWithTransport(internal::network::TransportProtocol*):NetworkClient.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "UIKit::UINavigationController::setTopViewControllerAnimated(UIKit::UIViewController*, bool)::$_1::operator()(Bolts::BFTask&lt;Bolts::BFBool&gt;*) const:UINavigationController.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "viewController">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "game::BaseTableView::numberOfCellsInTableView(cocos2d::extension::TableView*):BaseTableView.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "_dataSource-&gt;count()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "game::Object::setObject(cocos2d::Value&amp;, std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;):Object.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "value.asString()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "UIKit::UINavigationController::popToViewController(UIKit::UIViewController*, bool)::$_0::operator()(Bolts::BFTask&lt;Bolts::BFBool&gt;*) const:UINavigationController.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "visibleViewController">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
    </ContextStates>
 </VariablesViewState>

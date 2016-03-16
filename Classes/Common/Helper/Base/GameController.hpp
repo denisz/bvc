@@ -16,26 +16,30 @@
 #include "Router.hpp"
 #include "Actions.hpp"
 
+using namespace internal::network;
+using namespace common;
+
 namespace game {
-    class GameController: public NetworkController, public IActionController {
+    class GameViewController: public NetworkController, public IActionController, public UIKit::UIViewControllerProtocol {
     public:
         class Delegate {};
+    private:
+        Router* _router;
     protected:
         GameController();
-        common::Router* _router;
-        UIKit::UIViewController* _view;
-        virtual void processMessage(internal::network::Response& res);
-        virtual void processError(internal::network::Response& res);
+
+        virtual void processMessage(Response& res);
+        virtual void processError(Response& res);
         virtual bool init();
-        virtual void loadViewController();
     public:
         ~GameController();
-        void exit();
         Delegate* delegate;
-        common::Router* router();
+        Router* router();
+        
+        void exit();
+        void stun();
         void log(const std::string& message);
-        void setView(UIKit::UIViewController* view);
-        UIKit::UIViewController* getViewController();
+        
         BV_CREATE_FUNC(GameController);
     };
 }

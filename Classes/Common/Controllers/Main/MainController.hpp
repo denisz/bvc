@@ -12,6 +12,11 @@
 #include "stdafx.h"
 #include "FactoryControllers.h"
 #include "MainViewController.hpp"
+#include "PvPAvailableController.hpp"
+#include "GameListController.hpp"
+#include "PvPAvailableView.hpp"
+#include "GameFlowController.hpp"
+#include "AccountOnlineController.hpp"
 
 namespace game {
     class MainController: public GameController {
@@ -21,8 +26,9 @@ namespace game {
     private:
         States _states;
         Options _options;
+        void setup();
     protected:
-        virtual void loadViewController();
+        virtual UIKit::UIViewController* loadViewController();
         virtual bool init();
     public:
         BV_CREATE_FUNC(MainController);

@@ -45,6 +45,6 @@ void IActionController::processAction(internal::ActionsClient::Event* event) {
     _actionsRouter->process(event);
 }
 
-common::ActionsRouter* IActionController::actions() {
+common::ActionsRouter* IActionController::action() {
     return _actionsRouter;
 }

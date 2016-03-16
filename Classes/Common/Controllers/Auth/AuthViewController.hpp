@@ -9,6 +9,17 @@
 #ifndef AuthViewController_hpp
 #define AuthViewController_hpp
 
-#include <stdio.h>
+#include "stdafx.h"
+#include "UIKit.h"
+
+namespace game {
+    class AuthViewController: public UIKit::UIViewController {
+    private:
+        virtual void viewDidLoad();
+    public:
+        BV_CREATE_FUNC(AuthViewController);
+    };
+}
+
 
 #endif /* AuthViewController_hpp */

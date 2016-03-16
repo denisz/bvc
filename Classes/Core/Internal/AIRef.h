@@ -9,7 +9,8 @@
 #ifndef AIRef_h
 #define AIRef_h
 
-#define CC_SAFE_AUTORELEASE(p)     internal::DeferredRef __guard(p);
+#define CC_SAFE_DEFRREDRELEASE(p)     internal::DeferredRef __guard(p);
+#define CC_SAFE_AUTORELEASE(p)  do { if(p) { (p)->autorelease(); } } while(0)
 
 #include "cocos2d.h"
 

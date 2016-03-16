@@ -1,3 +1,4 @@
+
 //
 //  StarterViewController.cpp
 //  bvunity
@@ -9,37 +10,36 @@
 #include "StarterViewController.hpp"
 
 USING_NS_CC;
+USING_NS_CC_EXT;
 
 using namespace game;
 using namespace UIKit;
 
 void StarterViewController::viewDidLoad() {
     auto layout = ui::Layout::create();
+    layout->setPosition(Vec2(0,0));
     layout->setCascadeOpacityEnabled(true);
-    layout->setBackGroundColor(Color3B::GRAY);
-    layout->setBackGroundColorType(cocos2d::ui::Layout::BackGroundColorType::SOLID);
-    layout->setPosition(Vec2(10,10));
-    layout->setSize(Size(1004, 748));
-    
-    auto sprite = Sprite::create("logo.png");
-    sprite->setAnchorPoint(Vec2(0, 0));
-    sprite->setPosition(Vec2(0, 0));
-    layout->addChild(sprite);
-    
-    auto touchListener = EventListenerTouchOneByOne::create();
-    touchListener->onTouchBegan = [](Touch* touch, Event* event) -> bool {
-        auto bounds = event->getCurrentTarget()->getBoundingBox();
-        
-        if (bounds.containsPoint(touch->getLocation())){
-            std::cout << "Click" << std::endl;
-            auto event = ServiceLocator::actionsClient()->createEventWithCommand("next");
-            CC_SAFE_AUTORELEASE(event);
-            ServiceLocator::actionsClient()->call(event);
-        }
-        return true;
-    };
-    
-    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener,sprite);
-
+    layout->setContentSize(Size(1004, 748));
+    layout->setLayoutType(cocos2d::ui::Layout::Type::RELATIVE);
     view()->addChild(layout);
+    
+    auto lp = ui::RelativeLayoutParameter::create();
+    lp->setAlign(cocos2d::ui::RelativeLayoutParameter::RelativeAlign::CENTER_IN_PARENT);
+    
+    auto btn = ui::Button::create();
+    btn->setLayoutParameter(lp);
+    btn->setContentSize(Size(250, 50));
+    btn->setTitleFontSize(24);
+    btn->setTitleFontName("fonts/font.fnt");
+    btn->setTitleText("Start");
+    
+    btn->addClickEventListener([](Ref* sender){
+        auto actionClient = ServiceLocator::actionsClient();
+        auto event = actionClient->createEventWithCommand("start");
+        CC_SAFE_AUTORELEASE(event);
+        actionClient->call(event);
+    });
+    
+    
+    layout->addChild(btn);
 }

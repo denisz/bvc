@@ -20,18 +20,6 @@
 #include "DailyController.hpp"
 #include "MascotController.hpp"
 
-#define REGISTER_GETTER_PLUGIN(__TYPE__, name) \
-static __TYPE__* _##name;\
-static __TYPE__* name () {\
-if (Plugins::_##name == nullptr) {\
-Plugins::_##name = __TYPE__::create();\
-}\
-return Plugins::_##name;\
-}
-
-#define IM_REGISTER_PLUGIN(__TYPE__, name)\
-__TYPE__* Plugins::_##name;
-
 namespace game {
     class Plugins {
     public:

@@ -10,25 +10,47 @@
 #define DataSourceController_hpp
 
 #include "stdafx.h"
-#include "GameController.hpp"
+#include "NetworkController.hpp"
+#include "Router.hpp"
+
 namespace game {
-    class DataSourceController: public GameController {
+    class DataSourceController;
+    
+    class DataSourceViewControllerDelegate {
     public:
-        typedef internal::BVValueMap Context;
-        
-    public:
-        Context* _context;
-        enum class Options {CREATE, REPLACE, UPDATE, DELETE};
-        class Delegate {
-        public:
-            virtual void didChange(Options options, internal::BVValue &value, Context& context) {};
-            virtual void willChange(Options options, internal::BVValue &value, Context& context) {};
-        };
+        virtual int count() = 0;
+        virtual  internal::BVValue* getModelByIndex(ssize_t index) = 0;
+    };
+    
+    enum class DataSourceControllerOptions {INSERT, RELOAD, UPDATE, DELETE};
+    
+    class DataSourceViewControllerReload {
     protected:
+        void reloadRun() {
+            if (reloadCallback) reloadCallback();
+        }
+    public:
+         std::function<void()> reloadCallback;
+    };
+    
+    class DataSourceControllerDelegate {
+    public:
+        virtual void didChange(DataSourceController* ds, DataSourceControllerOptions options, BVValue &value) {};
+        virtual void willChange(DataSourceController* ds, DataSourceControllerOptions options, BVValue &value) {};
+    };
+    
+    class DataSourceController: public NetworkController {
+    protected:
+        virtual void processMessage(internal::network::Response& res);
+        virtual void processError(internal::network::Response& res);
         virtual bool init();
+        Router* _router;
+        Router* router();
     public:
         DataSourceController();
-        Delegate* dataSourceDelegate;
+        ~DataSourceController();
+        
+        DataSourceControllerDelegate* delegate;
     };
 }
 

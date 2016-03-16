@@ -23,7 +23,7 @@ IReactionController::~IReactionController() {
 
 bool IReactionController::init() {
     auto reaction = Reaction::create();
-    CC_SAFE_AUTORELEASE(reaction);
+    CC_SAFE_DEFRREDRELEASE(reaction);
     return initWithReaction(reaction);
 }
 

@@ -29,19 +29,22 @@ namespace game {
         ~Object();
         bool containsKey(const std::string &key) const;
         const std::string objectId() const;
-        const BVValue valueForKey(const std::string &key, const BVValue &defValue = BVValue::Null) const;
-        const BVValue valueForKey(const std::string &key, const std::string &defvalue) const;
-        const BVValue valueForKey(const std::string &key, const int defvalue) const;
+        
+        const BVValue valueForKey(const std::string &key, const int defVal) const;
+        const BVValue valueForKey(const std::string &key, const std::string &defVal) const;
+        const BVValue valueForKey(const std::string &key, const BVValue &defVal = BVValue::Null) const;
+        
         void setObject(BVValue &value, const std::string &key);
         void setObject(BVValueMap &value, const std::string &key);
         void setObject(BVValueVector &value, const std::string &key);
-        void mergeFromServer(BVValueMap &newData,  bool clear = false);
+        
         void clear();
+        void mergeFromServer(BVValueMap &newData,  bool clear = false);
         
         BVValueMap* data();
         
         const std::string hash() const;
-        /** == operator overloading */
+
         bool operator== (const Object& v);
         
         static Object* createWithName(const std::string& classname);

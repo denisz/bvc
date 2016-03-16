@@ -49,14 +49,32 @@ bool Actions::init() {
 
 void Actions::subscribe() {
     NotificationCenter::subscribe<internal::ActionsClient::Events>(this);
+    if (delegate != nullptr) {
+        delegate->didSubscribeAction();
+    }
 }
 
 void Actions::unsubscribe() {
-    NotificationCenter::unsubscribe<internal::ActionsClient::Events>(this); 
+    NotificationCenter::unsubscribe<internal::ActionsClient::Events>(this);
+    if (delegate != nullptr) {
+        delegate->didUnsubscribeAction();
+    }
 }
 
 void Actions::onCall(internal::ActionsClient::Event* event) {
     if (delegate != nullptr) {
         delegate->processAction(event);
     }
+}
+
+void Actions::pause() {
+    unsubscribe();
+}
+
+void Actions::resume() {
+    subscribe();
+}
+
+void Actions::stop() {
+   unsubscribe(); 
 }

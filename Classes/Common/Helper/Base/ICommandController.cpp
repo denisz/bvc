@@ -20,7 +20,7 @@ ICommandController::~ICommandController() {
 
 bool ICommandController::init() {
     auto commandRunner = common::CommandRunner::create();
-    CC_SAFE_AUTORELEASE(commandRunner);
+    CC_SAFE_DEFRREDRELEASE(commandRunner);
     return initWithCommandRunner(commandRunner);
 }
 

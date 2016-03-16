@@ -7,3 +7,9 @@
 //
 
 #include "AuthViewController.hpp"
+
+using namespace game;
+
+void AuthViewController::viewDidLoad() {
+    
+}

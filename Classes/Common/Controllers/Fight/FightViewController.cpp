@@ -7,3 +7,10 @@
 //
 
 #include "FightViewController.hpp"
+
+using namespace game;
+using namespace UIKit;
+
+void FightViewController::viewDidLoad() {
+    
+}

@@ -17,7 +17,7 @@ bool UserController::init() {
 
 CommandRunner::Handler* UserController::getAsync(const std::string& profileId, bool extended) {
     auto cmd = RequestCommand::createWithCommand("account/profile");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue("/id", profileId);
     cmd->setValue("/extended", extended);
     return runCommandInBackground(*cmd);

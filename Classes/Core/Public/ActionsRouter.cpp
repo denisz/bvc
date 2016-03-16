@@ -10,11 +10,14 @@
 
 using namespace common;
 
-ActionsRouter::ActionsRouter(){
+ActionsRouter::ActionsRouter()
+: _enabled(true)
+, delegate(nullptr) {
 }
 
 ActionsRouter::~ActionsRouter(){
     this->_handlers.clear();
+    delegate = nullptr;
 }
 
 bool ActionsRouter::init() {
@@ -50,4 +53,21 @@ void ActionsRouter::process(internal::ActionsClient::Event* event) {
         }
     }
     CC_SAFE_RELEASE(event);
+}
+
+void ActionsRouter::setEnabled(bool value) {
+    std::lock_guard<std::mutex> lock(_mutex);
+    _enabled = value;
+}
+
+void ActionsRouter::pause() {
+    setEnabled(false);
+}
+
+void ActionsRouter::resume() {
+    setEnabled(true);
+}
+
+void ActionsRouter::stop() {
+    setEnabled(false);
 }

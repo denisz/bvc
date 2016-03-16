@@ -11,13 +11,13 @@
 
 #include "stdafx.h"
 #include "GameController.hpp"
+#include "AuthViewController.hpp"
 
 namespace game {
     class AuthController: public GameController {
     private:
-        void commandAuth(internal::network::Response* res);
         void actionAuth();
-        
+        virtual UIKit::UIViewController* loadViewController();
         virtual void processOpen();
     public:
         virtual bool init();

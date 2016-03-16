@@ -10,7 +10,6 @@
 #define ConfigNames_hpp
 
 #include "stdafx.h"
-#include <stdio.h>
 
 
 namespace common {

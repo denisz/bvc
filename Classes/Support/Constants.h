@@ -55,4 +55,6 @@ const std::string kHiddenUserAvatar = "Hidden";
 const std::string kEventuallyDirPath = "eventually/";
 const std::string kCacheDirPath = "cache/";
 
+const std::string kResponseParamsAttribute = "/params";
+
 #endif /* Constants_h */

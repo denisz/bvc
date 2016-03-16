@@ -14,14 +14,12 @@
 #include "StarterViewController.hpp"
 #include "User.hpp"
 
-
 namespace game {
     class StarterController: public GameController {
     protected:
-        virtual void loadViewController();
+        virtual UIKit::UIViewController* loadViewController();
     private:
-        void commandAuth(internal::network::Response* res);
-        void actionNext(internal::ActionsClient::Event* event);
+        void actionStart(internal::ActionsClient::Event* event);
         void processOpen();
     public:
         virtual bool init();

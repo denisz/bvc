@@ -19,6 +19,6 @@ bool SessionController::isAuthenticated() {
 
 CommandRunner::Handler* SessionController::checkSessionTokenAsync() {
     auto cmd = RequestCommand::createWithCommand("account/checkAuth");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     return runCommandInBackground(*cmd);
 }

@@ -11,13 +11,14 @@
 using namespace internal::network;
 
 NetworkClient::NetworkClient()
-:_transport(nullptr){
-
+:_transport(nullptr)
+, _parser(nullptr) {
+    _parser = new Parser();
 }
 
 NetworkClient::~NetworkClient() {
-    CC_SAFE_RELEASE(_transport);
-    _transport = nullptr;
+    CC_SAFE_DELETE(_parser);
+    CC_SAFE_RELEASE_NULL(_transport);
 }
 
 
@@ -55,11 +56,12 @@ void NetworkClient::reconnect() {
     }
 }
 
-Response* NetworkClient::createSuccesfullResponse(TransportProtocol::Data& data) {
-    return Response::createWithJSON(data.bytes);
+Response* NetworkClient::tryCreateSuccesfullResponse(TransportProtocol::Data& data) {
+    auto doc = _parser->parse(data.bytes);
+    return Response::createWithDocument(doc);
 }
 
-Response* NetworkClient::createErrorResponse(TransportProtocol::ErrorCode &error) {
+Response* NetworkClient::tryCreateErrorResponse(TransportProtocol::ErrorCode &error) {
     auto doc = new rapidjson::Document();
     SetValueByPointer(*doc, "/command", "error");
     //    SetValueByPointer(doc, "/params/errorCode",  error);
@@ -80,17 +82,21 @@ void NetworkClient::sendMessage(Request &req) {
 
 //MARK
 void NetworkClient::onError(const TransportProtocol *transport, TransportProtocol::ErrorCode &error) {
-    auto res = createErrorResponse(error);
-    res->source = Response::Source::NETWORKCLIENT;
-    NotificationCenter::notify(&NetworkClient::Events::onError, res);
-    CC_SAFE_RELEASE(res);
+    auto res = tryCreateErrorResponse(error);
+    if (res != nullptr) {
+        res->source = Response::Source::NETWORKCLIENT;
+        NotificationCenter::notify(&NetworkClient::Events::onError, res);
+        CC_SAFE_RELEASE(res);
+    }
 }
 
 void NetworkClient::onMessage(const TransportProtocol *transport, TransportProtocol::Data &data) {
-    auto res = createSuccesfullResponse(data);
-    res->source = Response::Source::NETWORKCLIENT;
-    NotificationCenter::notify(&NetworkClient::Events::onReceivedMessage, res);
-    CC_SAFE_RELEASE(res);
+    auto res = tryCreateSuccesfullResponse(data);
+    if (res != nullptr) {
+        res->source = Response::Source::NETWORKCLIENT;
+        NotificationCenter::notify(&NetworkClient::Events::onReceivedMessage, res);
+        CC_SAFE_RELEASE(res);
+    }
 }
 
 void NetworkClient::onClose(const TransportProtocol *transport) {

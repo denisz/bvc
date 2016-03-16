@@ -13,35 +13,25 @@ using namespace UIKit;
 
 GameController::GameController()
 : _router(nullptr)
-, _view(nullptr)
 , delegate(nullptr) {
 
 }
 
 GameController::~GameController() {
-    CC_SAFE_RELEASE_NULL(_view);
     CC_SAFE_RELEASE_NULL(_router);
     
     delegate = nullptr;
+
+    std::cout << "Destroy GameController" << std::endl;
 }
 
 bool GameController::init() {
     NetworkController::init();
     IActionController::init();
+    UIViewControllerProtocol::init();
     
     _router = common::Router::create();
-    loadViewController();
     return true;
-}
-
-void GameController::loadViewController() {}
-
-UIViewController* GameController::getViewController() {
-    return _view;
-}
-
-void GameController::setView(UIViewController* view) {
-    _view = view;
 }
 
 common::Router* GameController::router() {
@@ -57,9 +47,15 @@ void GameController::processError(internal::network::Response& res) {
 }
 
 void GameController::log(const std::string& message) {
-    std::cout << "Log: " << message << std::endl;
+    std::cout << "[GameController] Log: " << message << std::endl;
+}
+
+void  GameController::stun() {
+    router()->pause();
+    action()->pause();
 }
 
 void GameController::exit() {
+    this->stun();
     this->autorelease();
 }

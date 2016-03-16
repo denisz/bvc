@@ -15,6 +15,12 @@
 
 namespace game {
     class MainViewController: public UIKit::UIViewController {
+    private:
+        void onDidTapBattlesWithPlayers(Ref* sender);
+        void onDidTapRandom(Ref* sender);
+        void onDidTapTourney(Ref* sender);
+        void onDidTapClans(Ref* sender);
+        void onDidTapBattleWithBots(Ref* sender);
     protected:
         virtual void viewDidLoad();
     public:

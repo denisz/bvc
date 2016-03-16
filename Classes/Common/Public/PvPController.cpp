@@ -16,13 +16,13 @@ bool PvPController::init() {
 CommandRunner::Handler* PvPController::initWithBot(const std::string& botId) {
     auto cmd = RequestCommand::createWithCommand("pvp/withBot");
     cmd->setValue("/botId", botId);
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     return runCommandInBackground(*cmd);
 }
 
 CommandRunner::Handler* PvPController::createChallenge(const internal::BVValueMap& options) {
     auto cmd = RequestCommand::createWithCommand("pvp/create");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue(options);
     return runCommandInBackground(*cmd);
 }
@@ -42,7 +42,7 @@ CommandRunner::Handler* PvPController::createDefaultChallenge() {
 
 CommandRunner::Handler* PvPController::acceptDuel() {
     auto cmd = RequestCommand::createWithCommand("pvp/approve");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue("/approve", true);
     
     return runCommandInBackground(*cmd);
@@ -50,7 +50,7 @@ CommandRunner::Handler* PvPController::acceptDuel() {
 
 CommandRunner::Handler* PvPController::denyDuel() {
     auto cmd = RequestCommand::createWithCommand("pvp/approve");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue("/approve", false);
     
     return runCommandInBackground(*cmd);
@@ -58,7 +58,7 @@ CommandRunner::Handler* PvPController::denyDuel() {
 
 CommandRunner::Handler* PvPController::join(const std::string& gameId) {
     auto cmd = RequestCommand::createWithCommand("pvp/join");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue("/gameId", gameId);
     
     return runCommandInBackground(*cmd);
@@ -66,35 +66,35 @@ CommandRunner::Handler* PvPController::join(const std::string& gameId) {
 
 CommandRunner::Handler* PvPController::cancel() {
     auto cmd = RequestCommand::createWithCommand("pvp/cancel");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     
     return runCommandInBackground(*cmd);
 }
 
 CommandRunner::Handler* PvPController::cancelRandom() {
     auto cmd = RequestCommand::createWithCommand("pvp/cancel");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     
     return runCommandInBackground(*cmd);
 }
 
 CommandRunner::Handler* PvPController::hasCreated() {
     auto cmd = RequestCommand::createWithCommand("pvp/hasCreated");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     
     return runCommandInBackground(*cmd);
 }
 
 CommandRunner::Handler* PvPController::hasRandom() {
     auto cmd = RequestCommand::createWithCommand("pvp/hasRandom");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     
     return runCommandInBackground(*cmd);
 }
 
 CommandRunner::Handler* PvPController::random() {
     auto cmd = RequestCommand::createWithCommand("pvp/random");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue("/any", true);
     
     return runCommandInBackground(*cmd);

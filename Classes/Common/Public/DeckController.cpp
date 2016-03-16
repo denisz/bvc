@@ -15,7 +15,7 @@ bool DeckController::init() {
 
 CommandRunner::Handler* DeckController::create(const internal::BVValueMap& data) {
     auto cmd = RequestCommand::createWithCommand("deck/save");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue(data);
     
     return runCommandInBackground(*cmd);
@@ -23,7 +23,7 @@ CommandRunner::Handler* DeckController::create(const internal::BVValueMap& data)
 
 CommandRunner::Handler* DeckController::copy(const internal::BVValueMap& data) {
     auto cmd = RequestCommand::createWithCommand("deck/save");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue(data);
     
     return runCommandInBackground(*cmd);
@@ -31,7 +31,7 @@ CommandRunner::Handler* DeckController::copy(const internal::BVValueMap& data) {
 
 CommandRunner::Handler* DeckController::save(const internal::BVValueMap& data) {
     auto cmd = RequestCommand::createWithCommand("deck/save");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue(data);
     
     return runCommandInBackground(*cmd);
@@ -39,7 +39,7 @@ CommandRunner::Handler* DeckController::save(const internal::BVValueMap& data) {
 
 CommandRunner::Handler* DeckController::remove(const std::string& deckId) {
     auto cmd = RequestCommand::createWithCommand("deck/delete");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue("/id", deckId);
     
     return runCommandInBackground(*cmd);
@@ -47,14 +47,14 @@ CommandRunner::Handler* DeckController::remove(const std::string& deckId) {
 
 CommandRunner::Handler* DeckController::list() {
     auto cmd = RequestCommand::createWithCommand("deck/list");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     
     return runCommandInBackground(*cmd);
 }
 
 CommandRunner::Handler* DeckController::rename(const std::string& deckId, const std::string& name) {
     auto cmd = RequestCommand::createWithCommand("deck/rename");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue("/id", deckId);
     cmd->setValue("/name", name);
     
@@ -63,7 +63,7 @@ CommandRunner::Handler* DeckController::rename(const std::string& deckId, const 
 
 CommandRunner::Handler* DeckController::changeCover(const std::string& deckId, const std::string& cover) {
     auto cmd = RequestCommand::createWithCommand("deck/changeCover");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue("/deckId", deckId);
     cmd->setValue("/cover", cover);
     
@@ -72,7 +72,7 @@ CommandRunner::Handler* DeckController::changeCover(const std::string& deckId, c
 
 CommandRunner::Handler* DeckController::addBookmark(const std::string& deckId) {
     auto cmd = RequestCommand::createWithCommand("deck/addBookmark");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue("/deckId", deckId);
     
     return runCommandInBackground(*cmd);
@@ -80,7 +80,7 @@ CommandRunner::Handler* DeckController::addBookmark(const std::string& deckId) {
 
 CommandRunner::Handler* DeckController::removeBookmark(const std::string& deckId) {
     auto cmd = RequestCommand::createWithCommand("deck/removeBookmark");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue("/deckId", deckId);
     
     return runCommandInBackground(*cmd);

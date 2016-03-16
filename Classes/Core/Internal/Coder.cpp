@@ -25,7 +25,8 @@ rapidjson::Document* Coder::decode(const char* json) {
     if (doc->Parse(json).HasParseError() == false) {
         return doc;
     } else {
-        std::cout << doc->GetParseError() << std::endl;
+        std::cout << "JSON Parse error: " << doc->GetParseError() << std::endl;
+        delete doc;
     }
     
     return nullptr;

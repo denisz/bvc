@@ -18,6 +18,8 @@ namespace common {
         class Delegate {
         public:
             virtual void processAction(internal::ActionsClient::Event* event) {};
+            virtual void didSubscribeAction() {};
+            virtual void didUnsubscribeAction() {};
         };
     private:
         virtual void onCall(internal::ActionsClient::Event* event);
@@ -29,6 +31,10 @@ namespace common {
         bool init();
         void subscribe();
         void unsubscribe();
+        
+        void pause();
+        void resume();
+        void stop();
         
         static Actions* create();
         static Actions* createWithDelegate(Delegate* delegate);

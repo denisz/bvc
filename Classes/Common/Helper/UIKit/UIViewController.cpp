@@ -38,18 +38,18 @@ UIViewControllerContextTransitioning::~UIViewControllerContextTransitioning() {
 }
 
 void UIViewControllerContextTransitioning::setFromViewController(UIViewController* from) {
+    CC_SAFE_RETAIN(from);
     _from = from;
-    CC_SAFE_RETAIN(_from);
 }
 
 void UIViewControllerContextTransitioning::setToViewController(UIViewController* to) {
+    CC_SAFE_RETAIN(to);
     _to = to;
-    CC_SAFE_RETAIN(_to);
 }
 
 void UIViewControllerContextTransitioning::setPromise(Promise* promise) {
+    CC_SAFE_RETAIN(promise);
     _promise = promise;
-    CC_SAFE_RETAIN(_promise);
 }
 
 UIViewControllerContextTransitioning::Promise* UIViewControllerContextTransitioning::promise() {
@@ -57,10 +57,28 @@ UIViewControllerContextTransitioning::Promise* UIViewControllerContextTransition
 }
 
 void UIViewControllerContextTransitioning::completeTransition(bool didComplete) {
-    auto promise = this->promise();
-    auto result  = new Bolts::BFBool(didComplete);
-    _completed = true;
-    promise->trySetResult(*result);
+    std::lock_guard<std::mutex> lock(_mutex);
+    
+    if (_completed == false) {
+        auto promise = this->promise();
+        auto result  = new Bolts::BFBool(didComplete);
+        CC_SAFE_DEFRREDRELEASE(result);
+        promise->trySetResult(*result);
+        _completed = true;
+    }
+}
+
+
+
+void UIViewControllerContextTransitioning::completeTransitionAsync(bool didComplete) {
+    CC_SAFE_RETAIN(this);
+    completeTransition(didComplete);
+    
+    std::thread([this](){
+//        usleep(100);
+        sleep(1);
+        CC_SAFE_RELEASE(this);
+    }).detach();
 }
 
 UIView* UIViewControllerContextTransitioning::viewForKey(Keys key) {
@@ -105,6 +123,7 @@ UIViewController::~UIViewController() {
     _view->removeFromParentAndCleanup(true);
     CC_SAFE_RELEASE_NULL(_view);
     CC_SAFE_RELEASE_NULL(_transitioningDelegate);
+    std::cout << "Destroy UIViewController" << std::endl;
 }
 
 UIViewController* UIViewController::create() {
@@ -141,7 +160,9 @@ void UIViewController::setView(UIView* view) {
         CC_SAFE_RELEASE_NULL(_view);
     }
     
+    willSetView(view);
     _view = view;
+    didSetView(view);
     viewDidLoad();
 }
 
@@ -161,34 +182,36 @@ void UIViewController::setTransition(UIViewControllerTransitioningDelegate* tran
     _transitioningDelegate = transitioningDelegate;
 }
 
+/**
+ ->continueWithBlock([this](UIViewController::Completion *task) -> UIViewController::Completion* {
+ return nullptr;
+ })*/
+
 UIViewController::Completion* UIViewController::presentViewController(UIViewController* viewController, bool animated) {
     auto promise = UIViewControllerContextTransitioning::Promise::taskCompletionSource();
-    auto task = promise->task();
+    CC_SAFE_DEFRREDRELEASE(promise);
+    
+    auto task       = promise->task();
+    auto presented  = viewController;
+    auto presenting = this;
+    auto source     = this;
+
+    auto context = new UIViewControllerContextTransitioning();
+    CC_SAFE_AUTORELEASE(context);
+    
+    context->setFromViewController(presenting);
+    context->setToViewController(presented);
+    context->setPromise(promise);
+    
+    this->showViewController(viewController);
     
     if (_transitioningDelegate != nullptr && animated == true) {
-        auto presented  = viewController;
-        auto presenting = this;
-        auto source     = this;
         auto animator   = _transitioningDelegate->animationControllerForPresentedController(presented, presenting, source);
-        auto context = new UIViewControllerContextTransitioning();
-        CC_SAFE_AUTORELEASE(context);
-        
-        context->setFromViewController(presenting);
-        context->setToViewController(presented);
-        context->setPromise(promise);
-        
-        showViewController(viewController);
         
         animator->setContext(context);
         animator->animateTransition(context);
-        
-        return task->continueWithBlock([this](UIViewController::Completion *task) -> UIViewController::Completion* {
-            return nullptr;
-        });
     } else {
-        showViewController(viewController);
-        auto result = new Bolts::BFBool(true);
-        promise->trySetResult(*result);
+        context->completeTransitionAsync();
     }
     
     return task;
@@ -196,35 +219,32 @@ UIViewController::Completion* UIViewController::presentViewController(UIViewCont
 
 UIViewController::Completion* UIViewController::dismissViewControllerAnimated(bool animated) {
     auto promise = UIViewControllerContextTransitioning::Promise::taskCompletionSource();
-    auto task = promise->task();
+    CC_SAFE_DEFRREDRELEASE(promise);
+    
+    auto task       = promise->task();
+    auto presented  = this;
+    auto presenting = this->_presentingViewController;
+    
+    auto context    = new UIViewControllerContextTransitioning();
+    CC_SAFE_AUTORELEASE(context);
+    
+    context->setFromViewController(presenting);
+    context->setToViewController(presented);
+    context->setPromise(promise);
     
     if (_transitioningDelegate != nullptr && animated == true) {
-        auto presented  = this;
-        auto presenting = this->_presentingViewController;
         auto animator   = _transitioningDelegate->animationControllerForDismissedController(this);
-        auto context    = new UIViewControllerContextTransitioning();
-        CC_SAFE_AUTORELEASE(context);
-        
-        context->setFromViewController(presenting);
-        context->setToViewController(presented);
-        context->setPromise(promise);
-
-        this->viewWillDisappear();
-        this->_presentingViewController = nullptr;
-        this->_parentViewController = nullptr;
         
         animator->setContext(context);
         animator->animateTransition(context);
         
         return task->continueWithBlock([this](UIViewController::Completion *task) -> UIViewController::Completion* {
-            this->view()->removeFromParent();
-            this->viewDidDisappear();
+            this->removeFromParent();
             return nullptr;
         });
     } else {
         this->removeFromParent();
-        auto result = new Bolts::BFBool(true);
-        promise->trySetResult(*result);
+        context->completeTransitionAsync();
     }
     
     return task;
@@ -237,9 +257,13 @@ void UIViewController::showViewController(UIViewController* viewController) {
     viewController->willMoveToParentViewController(this);
     viewController->viewWillAppear();
     parentContainerView->addChild(childView, 1);
-    viewController->_presentingViewController = this;
+    viewController->_presentingViewController = determinePresentingViewController();
     viewController->viewDidAppear();
     viewController->didMoveToParentViewController(this);
+}
+
+UIViewController* UIViewController::determinePresentingViewController() {
+    return this;
 }
 
 void UIViewController::viewDidLoad()      {};
@@ -266,9 +290,10 @@ void UIViewController::didMoveToParentViewController(UIViewController* viewContr
 }
 
 void UIViewController::removeFromParent() {
+    this->viewWillDisappear();
     this->_presentingViewController = nullptr;
     this->_parentViewController = nullptr;
-    this->view()->removeFromParent();
+    this->view()->removeFromParentAndCleanup(true);
     this->viewDidDisappear();
 }
 

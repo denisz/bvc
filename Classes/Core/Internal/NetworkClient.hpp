@@ -13,6 +13,7 @@
 #include "TransportProtocol.hpp"
 #include "Response.hpp"
 #include "Request.hpp"
+#include "Parser.hpp"
 
 namespace internal {
     namespace network {
@@ -28,7 +29,7 @@ namespace internal {
                 virtual void onClose()      {};
                 virtual void onReconnect()  {};
             };
-//            MARK: public
+
             void connect(const std::string &url);
             void sendMessage(const std::string &message);
             void sendMessage(Request &req);
@@ -36,20 +37,19 @@ namespace internal {
             void close();
             bool isOpenConnect();
         private:
-//            MARK: private
+
             NetworkClient();
+            Parser* _parser;
             TransportProtocol *_transport;
-            static Response* createSuccesfullResponse(TransportProtocol::Data &data);
-            static Response* createErrorResponse(TransportProtocol::ErrorCode &error);
+            Response* tryCreateSuccesfullResponse(TransportProtocol::Data &data);
+            Response* tryCreateErrorResponse(TransportProtocol::ErrorCode &error);
             
-//          MARK: TransportDelegate
             virtual void onError(const TransportProtocol* transport, TransportProtocol::ErrorCode &error);
             virtual void onMessage(const TransportProtocol* transport, TransportProtocol::Data &data);
             virtual void onClose(const TransportProtocol* transport);
             virtual void onOpen(const TransportProtocol* transport);
             virtual void onReconnect(const TransportProtocol* transport);
             
-//          MARK: initialize
             bool initWithTransport(TransportProtocol *transport);
         public:
             ~NetworkClient();

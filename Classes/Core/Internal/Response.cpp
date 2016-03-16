@@ -106,6 +106,14 @@ const bool Response::getBoolByPointerWithDefault(const std::string &path, const 
     return value.GetBool();
 }
 
+BVValue Response::getVectorByPointerAsValue(const std::string &path) {
+    auto vector = getVectorByPointer(path);
+    if (vector.empty())
+        return BVValue::Null;
+    
+    return BVValue(vector);
+}
+
 BVValueVector Response::getVectorByPointer(const std::string &path) {
     auto map = GetValueByPointer(*_cacheDocument, Pointer(path.c_str()));
     if (map != nullptr) {
@@ -115,16 +123,27 @@ BVValueVector Response::getVectorByPointer(const std::string &path) {
     return BVValueVector();
 }
 
+BVValue Response::getMapByPointerAsValue(const std::string &path) {
+    auto map = getMapByPointer(path, BVValueMap());
+    if (map.empty())
+        return BVValue::Null;
+    
+    return BVValue(map);
+}
+
 BVValueMap Response::getMapByPointer(const std::string &path) {
+    return getMapByPointer(path, BVValueMap());
+}
+
+BVValueMap Response::getMapByPointer(const std::string &path, const BVValueMap& def) {
     auto map = GetValueByPointer(*_cacheDocument, Pointer(path.c_str()));
     
     if (map != nullptr) {
         return converterValueMap(*map);
     }
     
-    return BVValueMap();
+    return def;
 }
-
 
 bool Response::isAnswer() {
     return !_callbackId.empty();

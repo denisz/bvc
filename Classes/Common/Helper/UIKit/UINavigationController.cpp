@@ -20,26 +20,61 @@ bool UINavigationControllerTransitionManager::init() {
 }
 
 void UINavigationControllerTransitionManager::animateTransition(UIViewControllerContextTransitioning* transitionContext) {
-
+    
     auto toView = transitionContext->viewForKey(UIViewControllerContextTransitioning::Keys::To);
+    auto fromView = transitionContext->viewForKey(UIViewControllerContextTransitioning::Keys::From);
+    auto _duration = this->transitionDuration(transitionContext);
+    
     if (toView == nullptr) {
         animationEnded();
         return;
     }
-    
-    auto _duration = this->transitionDuration(transitionContext);
 
     toView->setCascadeOpacityEnabled(true);
-    toView->setOpacity(0);
     
-    cocos2d::ActionInterval* a = (cocos2d::ActionInterval *)cocos2d::Sequence::create
-    (
-     FadeIn::create(_duration),
-     CallFunc::create(CC_CALLBACK_0(UINavigationControllerTransitionManager::animationEnded, this)),
-     nullptr
-     );
+    if (presenting) {
+        toView->setOpacity(0);
+        
+        cocos2d::ActionInterval* seq = (cocos2d::ActionInterval *)cocos2d::Sequence::create
+        (
+         FadeIn::create(_duration),
+         CallFunc::create(CC_CALLBACK_0(UINavigationControllerTransitionManager::animationEndedWithContext, this, transitionContext)),
+         nullptr
+         );
+        
+        if (fromView != nullptr) {
+            cocos2d::ActionInterval* seqFrom = (cocos2d::ActionInterval *)cocos2d::Sequence::create
+            (
+             FadeOut::create(_duration),
+             Hide::create(),
+             nullptr
+             );
 
-     toView->runAction(a);
+            fromView->runAction(seqFrom);
+        }
+        
+        
+        toView->runAction(seq);
+    } else {
+        cocos2d::ActionInterval* seq = (cocos2d::ActionInterval *)cocos2d::Sequence::create
+        (
+         FadeOut::create(_duration),
+         CallFunc::create(CC_CALLBACK_0(UINavigationControllerTransitionManager::animationEndedWithContext, this, transitionContext)),
+         nullptr
+         );
+        
+//        if (fromView != nullptr) {
+//            cocos2d::ActionInterval* seqFrom = (cocos2d::ActionInterval *)cocos2d::Sequence::create
+//            (
+//             FadeIn::create(_duration),
+//             nullptr
+//             );
+//            
+//            fromView->runAction(seqFrom);
+//        }
+        
+        toView->runAction(seq);
+    }
 }
 
 time_t UINavigationControllerTransitionManager::transitionDuration(UIViewControllerContextTransitioning* transitionContext) {
@@ -57,11 +92,17 @@ UINavigationController::UINavigationController()
 
 UINavigationController::~UINavigationController() {
     delegate = nullptr;
-    _stackControllers.clear();
+    clear();
     CC_SAFE_RELEASE_NULL(_navigationContainerView);
     CC_SAFE_RELEASE_NULL(_transitioningNavigationDelegate);
 }
 
+void UINavigationController::clear() {
+    for (auto item: _stackControllers) {
+        CC_SAFE_RELEASE(item);
+    }
+    _stackControllers.clear();
+}
 bool UINavigationController::init() {
     _stackControllers = std::forward_list<UIViewController*>();
     
@@ -73,7 +114,7 @@ bool UINavigationController::init() {
 
 bool UINavigationController::initWithRootViewContorller(UIViewController* viewController) {
     auto result = UINavigationController::init();
-    setTopViewControllerAnimated(viewController, false);
+    pushViewController(viewController, false);
     return result;
 }
 
@@ -97,15 +138,13 @@ UINavigationController* UINavigationController::createWithRootViewController(UIV
     return nullptr;
 }
 
-void UINavigationController::setView(UIView* view) {
+void UINavigationController::didSetView(UIView* view) {
     if (_navigationContainerView != nullptr) {
         CC_SAFE_RELEASE_NULL(_navigationContainerView);
     }
     
     _navigationContainerView = UIView::create();
-    view->addChild(_navigationContainerView, 1);
-    
-    UIViewController::setView(view);
+    view->addChild(_navigationContainerView, 1);    
 }
 
 std::forward_list<UIViewController*> UINavigationController::viewControllers() {
@@ -129,103 +168,137 @@ UIView* UINavigationController::containerView() {
     return _navigationContainerView;
 }
 
-UIViewController::Completion* UINavigationController::pushViewController(UIViewController* viewController, bool animated) {
+UIViewController* UINavigationController::determinePresentingViewController() {
+    return this->visibleViewController;
+}
+
+bool UINavigationController::isExistsViewController(UIViewController* viewController) {
     auto it = std::find(_stackControllers.begin(), _stackControllers.end(), viewController);
-    if (it != _stackControllers.end()) {
+    return it != _stackControllers.end();
+}
+
+UIViewController::Completion* UINavigationController::pushViewController(UIViewController* viewController, bool animated) {
+    if (isExistsViewController(viewController)) {
         throw Error("The `ViewController` has already been added to this navigation controller");
     }
+
+    auto promise    = UIViewControllerContextTransitioning::Promise::taskCompletionSource();
+    CC_SAFE_DEFRREDRELEASE(promise);
     
-    auto promise = UIViewControllerContextTransitioning::Promise::taskCompletionSource();
-    auto task = promise->task();
+    auto task       = promise->task();
+    auto presented  = viewController;
+    auto source     = this;
+    auto presenting = this->visibleViewController;
     
+    auto context    = new UIViewControllerContextTransitioning();
+    CC_SAFE_AUTORELEASE(context);
+    
+    context->setFromViewController(presenting);
+    context->setToViewController(presented);
+    context->setPromise(promise);
+    
+    this->showViewController(viewController);
+    this->visibleViewController = presented;
+    
+    if (_stackControllers.empty()) {
+        topViewController = presented;
+    }
+
     _stackControllers.push_front(viewController);
+    CC_SAFE_RETAIN(viewController);
     
     if (_transitioningNavigationDelegate != nullptr && animated == true) {
-        auto presented  = viewController;
-        auto presenting = this->visibleViewController;
-        auto source     = this;
         auto animator   = _transitioningNavigationDelegate->animationControllerForPresentedController(presented, presenting, source);
-        
-        auto context = new UIViewControllerContextTransitioning();
-        CC_SAFE_AUTORELEASE(context);
-        
-        context->setFromViewController(presenting);
-        context->setToViewController(presented);
-        context->setPromise(promise);
-        
-        showViewController(viewController);
-        this->visibleViewController = viewController;
         
         animator->setContext(context);
         animator->animateTransition(context);
-        
-        return task->continueWithBlock([this](UIViewController::Completion *task) -> UIViewController::Completion* {
-            return nullptr;
-        });
     } else {
-        this->visibleViewController = viewController;
-        showViewController(viewController);
-        auto result = new Bolts::BFBool(true);
-        promise->trySetResult(*result);
+        context->completeTransitionAsync();
     }
     
     return task;
 }
 
-UIViewController* UINavigationController::popViewControllerAnimated(bool animated) {
+UIViewController::Completion* UINavigationController::popViewControllerAnimated(bool animated) {
+    if (_stackControllers.empty())
+        return nullptr;
+    
     auto viewController = _stackControllers.front();
     
-    auto promise = UIViewControllerContextTransitioning::Promise::taskCompletionSource();
-    auto task = promise->task();
+    auto promise        = UIViewControllerContextTransitioning::Promise::taskCompletionSource();
+    CC_SAFE_DEFRREDRELEASE(promise);
     
+    auto task           = promise->task();
+    auto presented      = viewController;
+    auto presenting     = viewController->presentingViewController();
+    
+    auto context        = new UIViewControllerContextTransitioning();
+    CC_SAFE_AUTORELEASE(context);
+
+    context->setFromViewController(presenting);
+    context->setToViewController(presented);
+    context->setPromise(promise);
+    
+    this->visibleViewController = presenting;
+    
+    _stackControllers.pop_front();
+    CC_SAFE_RELEASE(viewController);
+    
+    if (_stackControllers.empty()) {
+        topViewController = nullptr;
+    }
+
     if (_transitioningNavigationDelegate != nullptr && animated == true) {
-        auto presented  = viewController;
-        auto presenting = viewController->presentingViewController();
-        auto animator   = _transitioningNavigationDelegate->animationControllerForDismissedController(this);
-        auto context    = new UIViewControllerContextTransitioning();
-        CC_SAFE_AUTORELEASE(context);
-        
-        context->setFromViewController(presenting);
-        context->setToViewController(presented);
-        context->setPromise(promise);
-        
-        this->viewWillDisappear();
-        
-        this->visibleViewController = presenting;
+        auto animator   = _transitioningNavigationDelegate->animationControllerForDismissedController(presented);
         
         animator->setContext(context);
         animator->animateTransition(context);
-        
-        task->continueWithBlock([&](UIViewController::Completion *task) -> UIViewController::Completion* {
-            CC_SAFE_RELEASE(context);
-            viewController->removeFromParent();
-            return nullptr;
-        });
     } else {
-        this->viewWillDisappear();
-        this->_presentingViewController = nullptr;
-        this->_parentViewController = nullptr;
-        auto view = this->view();
-        view->removeFromParent();
-        this->viewDidDisappear();
+        viewController->removeFromParent();
+        context->completeTransitionAsync();
+    }
+
+    return task;
+}
+
+UIViewController::Completion* UINavigationController::popViewController(UIViewController* viewController, bool animated) {
+    if (visibleViewController == viewController) {
+        return popViewControllerAnimated(animated);
+    }
+
+    auto promise        = UIViewControllerContextTransitioning::Promise::taskCompletionSource();
+    CC_SAFE_DEFRREDRELEASE(promise);
+    
+    auto task           = promise->task();
+    auto presented      = viewController;
+    auto presenting     = viewController->presentingViewController();
+    
+    auto context        = new UIViewControllerContextTransitioning();
+    CC_SAFE_AUTORELEASE(context);
+    
+    context->setFromViewController(presenting);
+    context->setToViewController(presented);
+    context->setPromise(promise);
+    
+    this->visibleViewController = presenting;
+    
+    _stackControllers.remove(viewController);
+    CC_SAFE_RELEASE(viewController);
+    
+    if (_stackControllers.empty()) {
+        topViewController = nullptr;
     }
     
-    _stackControllers.pop_front();
-    return viewController;
-}
-
-std::vector<UIViewController*> UINavigationController::popToRootViewControllerAnimated(bool animated) {
-    auto stack = std::vector<UIViewController*>();
+    if (_transitioningNavigationDelegate != nullptr && animated == true) {
+        auto animator   = _transitioningNavigationDelegate->animationControllerForDismissedController(presented);
+        
+        animator->setContext(context);
+        animator->animateTransition(context);
+    } else {
+        viewController->removeFromParent();
+        context->completeTransitionAsync();
+    }
     
-    return stack;
-}
-
-UIViewController::Completion* UINavigationController::setTopViewControllerAnimated(UIViewController* viewController,bool animated) {
+    return task;
     
-    return pushViewController(viewController, animated)->continueWithBlock([&](UIViewController::Completion *task) -> UIViewController::Completion* {
-        _stackControllers.clear();
-        _stackControllers.push_front(viewController);
-        this->topViewController = viewController;
-        return nullptr;
-    });
 }

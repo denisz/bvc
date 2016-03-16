@@ -19,12 +19,12 @@ namespace game {
         static RootController* _instance;
     protected:
         RootController();
-        virtual void loadViewController();
+        virtual UIKit::UIViewController* loadViewController();
     public:
         virtual bool init();
-        void setTop(GameController* controller, bool animated = true);
-        void push_front(GameController* controller, bool animated = true);
-        void pop_front(bool animated = true);
+        void presentController(GameController* controller, bool animated = true);
+        void dismissController(GameController* controller, bool animated = true);
+        void dismissController(bool animated = true);
         static RootController* getInstance();
         BV_CREATE_FUNC(RootController);
     };

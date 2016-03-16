@@ -46,14 +46,16 @@ namespace UIKit {
         UIView* _navigationContainerView;
         std::forward_list<UIViewController*> _stackControllers;
         UIViewControllerTransitioningDelegate* _transitioningNavigationDelegate;
-        void setView(UIView* view);
+        virtual void didSetView(UIView* view);
         void setNavigationTransition(UIViewControllerTransitioningDelegate* transitioningDelegate);
+        bool isExistsViewController(UIViewController* viewController);
+        void clear();
     protected:
         UINavigationController();
         virtual bool init();
         virtual UIView* containerView();
+        virtual UIViewController* determinePresentingViewController();
         UIViewControllerTransitioningDelegate* loadNavigationTransition();
-        
         bool initWithRootViewContorller(UIViewController* viewController);
     public:
         UIViewController* topViewController;
@@ -62,11 +64,9 @@ namespace UIKit {
         
         ~UINavigationController();
         Delegate* delegate;
-        UIViewController::Completion* pushViewController(UIViewController* viewController, bool animated);
-        UIViewController* popViewControllerAnimated(bool animated);
-        UIViewController::Completion* setTopViewControllerAnimated(UIViewController* viewController,bool animated);
-        std::vector<UIViewController*> popToRootViewControllerAnimated(bool animated);
-        std::vector<UIViewController*> popToViewController(UIViewController* viewController, bool animated);
+        UIViewController::Completion* pushViewController(UIViewController* viewController, bool animated = true);
+        UIViewController::Completion* popViewController(UIViewController* viewController, bool animated = true);
+        UIViewController::Completion* popViewControllerAnimated(bool animated = true);
         
         static UINavigationController* create();
         static UINavigationController* createWithRootViewController(UIViewController* viewController);

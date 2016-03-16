@@ -15,7 +15,7 @@ bool ChatController::init() {
 
 CommandRunner::Handler* ChatController::sendMessageAsync(CHANNELS channel, const std::string& message) {
     auto cmd = RequestCommand::createWithCommand("chat/send");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue("/type", toString(channel));
     cmd->setValue("/msg",  message);
     
@@ -24,7 +24,7 @@ CommandRunner::Handler* ChatController::sendMessageAsync(CHANNELS channel, const
 
 CommandRunner::Handler* ChatController::sendMessageAsync(CHANNELS channel, const std::string& to,const std::string& message) {
     auto cmd = RequestCommand::createWithCommand("chat/send");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->setValue("/type",  toString(channel));
     cmd->setValue("/msg",   message);
     cmd->setValue("/to",    to);

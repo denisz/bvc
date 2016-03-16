@@ -11,17 +11,19 @@
 using namespace common;
 using namespace internal::network;
 
-Router::Router(){
+Router::Router()
+: _enabled(true)
+, delegate(nullptr) {
 }
 
 Router::~Router(){
     this->_handlers.clear();
-    this->_after_handlers.clear();
-    this->_before_handlers.clear();
+    
+    delegate = nullptr;
 }
 
 bool Router::init() {
-    this->_handlers = std::forward_list<HandlerData>();
+    this->_handlers = std::map<std::string, HandlerList>();
     return true;
 }
 
@@ -36,46 +38,69 @@ Router* Router::create() {
 }
 
 Router* Router::command(const std::string& path, const Handler& handler) {
-    auto h = HandlerData();
-    h.path = path;
-    h.handler = handler;
-    this->_handlers.push_front(h);
+    auto handlerList = HandlerList();
+    handlerList.push_back(handler);
+    this->_handlers[path] = handlerList;
     return this;
 }
 
-Router* Router::after(const std::string& path, const Handler& handler) {
-    auto h = HandlerData();
-    h.path = path;
-    h.handler = handler;
-    this->_after_handlers.push_front(h);
+Router* Router::command(const std::string& path, std::initializer_list<Handler> handler) {
+    auto handlerList = HandlerList();
+    for (auto elem: handler) {
+        handlerList.push_back(elem);
+    }
+    
+    this->_handlers[path] = handlerList;
     return this;
 }
 
-Router* Router::before(const std::string& path, const Handler& handler) {
-    auto h = HandlerData();
-    h.path = path;
-    h.handler = handler;
-    this->_before_handlers.push_front(h);
+Router* Router::use(Handlers& handlers) {
+    for (auto elem: handlers) {
+        _handlers[elem.first] = elem.second;
+    }
     return this;
 }
 
 void Router::process(Response& res) {
-    this->worker(this->_after_handlers, res);
-    this->worker(this->_handlers, res);
-    this->worker(this->_before_handlers, res);
+    if (_enabled) {
+        this->worker(this->_handlers, PATH_GLOBAL, res);
+        this->worker(this->_handlers, res.command(), res);
+    }
 }
 
 void Router::error(Response& res) {
-    this->worker(this->_after_handlers, res);
-    this->worker(this->_handlers, res);
-    this->worker(this->_before_handlers, res);
+    if (_enabled) {
+        this->worker(this->_handlers, PATH_GLOBAL, res);
+        this->worker(this->_handlers, res.command(), res);
+    }
 }
 
-void Router::worker(std::forward_list<HandlerData>& handlers, internal::network::Response& res) {
-    auto command = res.command();
-    for (auto worker: handlers) {
-        if (worker.path == command || worker.path == PATH_GLOBAL) {
-            worker.handler(&res);
+void Router::worker(std::map<std::string, HandlerList>& handlers, const std::string& command, Response& res) {
+
+    auto it = handlers.find(command);
+    if (it != handlers.end()) {
+        auto handlers = it->second;
+        for (auto worker: handlers) {
+            if (!worker(&res)) {
+                break;
+            }
         }
     }
+}
+
+void Router::setEnabled(bool value) {
+    std::lock_guard<std::mutex> lock(_mutex);
+    _enabled = value;
+}
+
+void Router::pause() {
+    setEnabled(false);
+}
+
+void Router::resume() {
+    setEnabled(true);
+}
+
+void Router::stop() {
+    setEnabled(false);
 }

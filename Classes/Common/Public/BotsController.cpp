@@ -17,7 +17,7 @@ bool BotsController::init() {
 
 CommandRunner::Handler* BotsController::getAsync() {
     auto cmd = RequestCommand::createWithCommand("account/listBots");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     cmd->fromLocalDatastore();
     
     return runCommandInBackground(*cmd);

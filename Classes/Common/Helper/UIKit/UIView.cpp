@@ -11,5 +11,22 @@
 using namespace UIKit;
 
 bool UIView::init() {
-    return Layout::init();
+    if (Layout::init()) {
+        viewDidLoad();
+        return true;
+    }
+    
+    return false;
 }
+
+bool UIView::initWithSize(const cocos2d::Size &contentSize) {
+    if (Layout::init()) {
+        setContentSize(contentSize);
+        viewDidLoad();
+        return true;
+    }
+    
+    return false;
+}
+
+void UIView::viewDidLoad() {}

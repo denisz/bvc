@@ -43,7 +43,10 @@ namespace internal {
             const bool getBoolByPointerWithDefault(const std::string &path, const bool def);
             
             internal::BVValueVector getVectorByPointer(const std::string &path);
-            internal::BVValueMap getMapByPointer(const std::string &path);
+            internal::BVValue       getVectorByPointerAsValue(const std::string &path);
+            internal::BVValueMap    getMapByPointer(const std::string &path);
+            internal::BVValueMap    getMapByPointer(const std::string &path, const BVValueMap& def);
+            internal::BVValue       getMapByPointerAsValue(const std::string &path);
             
             static Response * createWithJSON(const std::string& json);
             static Response* createWithJSON(const char *json);

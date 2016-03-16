@@ -19,6 +19,8 @@ namespace common {
     public:
         typedef std::function<void(internal::ActionsClient::Event*)> Handler;
     private:
+        class Delegate {};
+        
         struct HandlerData
         {
             HandlerData():handler(nullptr), path(""){}
@@ -27,11 +29,21 @@ namespace common {
         };
         
     private:
+        std::mutex _mutex;
         std::forward_list<HandlerData> _handlers;
+        bool _enabled;
+        void setEnabled(bool value);
         ActionsRouter();
     public:
         ~ActionsRouter();
         ActionsRouter* action(const std::string& path, const Handler& handler);
+        
+        Delegate* delegate;
+        
+        void pause();
+        void resume();
+        void stop();
+
         
         void process(internal::ActionsClient::Event* event);
         virtual bool init();

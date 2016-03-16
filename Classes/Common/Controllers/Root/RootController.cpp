@@ -29,21 +29,21 @@ bool RootController::init() {
     return GameController::init();
 }
 
-void RootController::loadViewController() {
-    setView(RootViewController::create());
+UIKit::UIViewController* RootController::loadViewController() {
+    return RootViewController::create();
 }
 
-void RootController::setTop(GameController* controller, bool animated) {
-    auto view = dynamic_cast<UIKit::UINavigationController*>(getViewController());
-    view->setTopViewControllerAnimated(controller->getViewController(), animated);
-}
-
-void RootController::push_front(GameController* controller, bool animated) {
+void RootController::presentController(GameController* controller, bool animated) {
     auto view = dynamic_cast<UIKit::UINavigationController*>(getViewController());
     view->pushViewController(controller->getViewController(), animated);
 }
 
-void RootController::pop_front(bool animated) {
+void RootController::dismissController(GameController* controller, bool animated) {
+    auto view = dynamic_cast<UIKit::UINavigationController*>(getViewController());
+    view->popViewController(controller->getViewController(), animated);
+}
+
+void RootController::dismissController(bool animated) {
     auto view = dynamic_cast<UIKit::UINavigationController*>(getViewController());
     view->popViewControllerAnimated(animated);
 }

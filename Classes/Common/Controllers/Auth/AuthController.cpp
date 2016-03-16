@@ -11,15 +11,8 @@
 using namespace game;
 
 bool AuthController::init() {
-    _router->command("/command/auth",
-                     BV_CALLBACK_1(AuthController::commandAuth, this) );
-    
     actionAuth();
     return true;
-}
-
-void AuthController::commandAuth(internal::network::Response* res) {
-    
 }
 
 void AuthController::actionAuth() {
@@ -29,4 +22,8 @@ void AuthController::actionAuth() {
 void AuthController::processOpen() {
     std::cout << "Open websocket" << std::endl;
     NetworkController::processOpen();
+}
+
+UIKit::UIViewController* AuthController::loadViewController() {
+    return AuthViewController::create();
 }

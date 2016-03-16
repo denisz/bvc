@@ -13,7 +13,7 @@ using namespace internal::network;
 WebSocketTransport::WebSocketTransport()
 : _url("")
 , _isReconnect(false) {
-    _readyState = internal::network::TransportProtocol::State::CONNECTING;
+    _readyState = internal::network::TransportProtocol::State::CLOSED;
     _wsClient = new cocos2d::network::WebSocket();
 }
 
@@ -39,7 +39,7 @@ void WebSocketTransport::send(const std::string& message) {
     std::cout << std::endl << "<< Send message" << std::endl;
     std::cout << message << std::endl;
     std::cout << "--------------------------------------------" << std::endl;
-
+    
     _wsClient->send(message);
 }
 
@@ -65,9 +65,11 @@ void WebSocketTransport::reconnect() {
 }
 
 void WebSocketTransport::connect(const std::string& url) {
-    _wsClient->init(*this, url);
-    _url = url;
-    _readyState = internal::network::TransportProtocol::State::CONNECTING;
+    if (_readyState == TransportProtocol::State::CLOSED) {
+        _wsClient->init(*this, url);
+        _url = url;
+        _readyState = internal::network::TransportProtocol::State::CONNECTING;
+    }
 }
 
 //Implementation cocos2d websocket delegate

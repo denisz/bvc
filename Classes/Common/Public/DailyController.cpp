@@ -15,7 +15,7 @@ bool DailyController::init() {
 
 CommandRunner::Handler* DailyController::getAsync() {
     auto cmd = RequestCommand::createWithCommand("dailyq/list");
-    CC_SAFE_AUTORELEASE(cmd);
+    CC_SAFE_DEFRREDRELEASE(cmd);
     
     return runCommandInBackground(*cmd);
 

@@ -65,7 +65,6 @@ template<class T>
     template<class T>
     BFTaskCompletionSource<T> ::BFTaskCompletionSource(uint countThread) {
         _task = BFTask<T>::create();
-        _task->countThread = countThread;
     }
 
     template<class T>

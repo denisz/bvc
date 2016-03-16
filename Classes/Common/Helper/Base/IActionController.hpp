@@ -23,7 +23,7 @@ namespace game {
         virtual void processAction(internal::ActionsClient::Event* event);
         bool _autoSubscribeAction;
     public:
-        common::ActionsRouter* actions();
+        common::ActionsRouter* action();
 
         IActionController();
         ~IActionController();

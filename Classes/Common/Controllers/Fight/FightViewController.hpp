@@ -9,6 +9,17 @@
 #ifndef FightViewController_hpp
 #define FightViewController_hpp
 
-#include <stdio.h>
+#include "stdafx.h"
+#include "UIKit.h"
+
+namespace game {
+    class FightViewController: public UIKit::UIViewController {
+    protected:
+        virtual void viewDidLoad();
+        
+    public:
+        BV_CREATE_FUNC(FightViewController);
+    };
+}
 
 #endif /* FightViewController_hpp */

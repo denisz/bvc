@@ -21,11 +21,13 @@ namespace game {
         CommandRunner::Handler* signUpAsync(const std::string &login, const std::string &password);
         CommandRunner::Handler* logOutAsync();
         CommandRunner::Handler* requestPasswordResetAsync();
-        CommandRunner::Handler* removeFriends(const std::string &profileId);
-        CommandRunner::Handler* addFriends(const std::string &profileId);
+        
+        CommandRunner::Handler* removeFriend(const std::string &profileId);
+        CommandRunner::Handler* addFriend(const std::string &profileId);
+        CommandRunner::Handler* friends();
+        
         CommandRunner::Handler* removeFromBlacklist(const std::string &profileId);
         CommandRunner::Handler* addToBlacklist(const std::string &profileId);
-        CommandRunner::Handler* friends();
         CommandRunner::Handler* blacklist();
         
         bool init();

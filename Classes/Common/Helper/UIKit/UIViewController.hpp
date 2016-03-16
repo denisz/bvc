@@ -22,6 +22,7 @@ namespace UIKit {
         UIViewController*   _to;
         Promise*            _promise;
         bool                _completed;
+        std::mutex          _mutex;
     public:
         UIViewControllerContextTransitioning();
         ~UIViewControllerContextTransitioning();
@@ -32,6 +33,7 @@ namespace UIKit {
         bool isCompleted();
         
         void completeTransition(bool didComplete = true);
+        void completeTransitionAsync(bool didComplete = true);
         Promise* promise();
         
         UIView* viewForKey(Keys key);
@@ -45,17 +47,24 @@ namespace UIKit {
     private:
         UIViewControllerContextTransitioning* _context;
     protected:
-        virtual void animationEnded() {
-            //todo add safe thread implementation
-            if (_context != nullptr) {
+        void animationEnded() {
+            return animationEndedWithContext(_context);
+        }
+        
+        void animationEndedWithContext(UIViewControllerContextTransitioning* context) {
+            if (_context == context) {
                 _context->completeTransition(true);
                 CC_SAFE_RELEASE_NULL(_context);
             }
         };
     public:
         void setContext(UIViewControllerContextTransitioning* context) {
+            if (_context != nullptr) {
+                animationEndedWithContext(_context);
+            }
+            
+            CC_SAFE_RETAIN(context);
             _context = context;
-            CC_SAFE_RETAIN(_context);
         }
         virtual void animateTransition(UIViewControllerContextTransitioning* transitionContext) = 0;
         virtual time_t transitionDuration(UIViewControllerContextTransitioning* transitionContext) = 0;
@@ -98,7 +107,7 @@ namespace UIKit {
         BV_CREATE_FUNC(UIViewControllerTransitionManager);
     };
     
-    class UIViewController: public internal::AIRef {
+    class UIViewControllerProtocol {
     public:
         typedef Bolts::BFTask<Bolts::BFBool> Completion;
     private:
@@ -106,32 +115,39 @@ namespace UIKit {
         UIViewControllerTransitioningDelegate* _transitioningDelegate;
         std::vector<UIViewController*> _childControllers;
     protected:
-        UIViewController();
+        UIViewControllerProtocol();
 
         UIViewController* _presentingViewController;
         UIViewController* _presentedViewController;
         UIViewController* _parentViewController;
 
         virtual bool init();
+        virtual UIView* loadView();
+        virtual UIViewControllerTransitioningDelegate* loadTransition();
+        virtual UIViewController* determinePresentingViewController();
+        
+    public:
+        ~UIViewControllerProtocol();
+        
+// MARK: life cycle
         virtual void viewDidLoad();
         virtual void viewWillAppear();
         virtual void viewDidAppear();
         virtual void viewWillDisappear();
         virtual void viewDidDisappear();
-        virtual UIView* loadView();
-        virtual UIViewControllerTransitioningDelegate* loadTransition();
-
-    public:
-        ~UIViewController();
         
+//MARK: constructor
         UIView* view();
-        UIView* containerView();
         
         UIViewController* presentingViewController();
         
         void setView(UIView* view);
         void setTransition(UIViewControllerTransitioningDelegate* transitioningDelegate);
         
+        virtual void willSetView(UIView* view) {};
+        virtual void didSetView(UIView* view) {};
+        virtual UIView* containerView();
+
         virtual Completion* presentViewController(UIViewController* viewController, bool animated);
         virtual Completion* dismissViewControllerAnimated(bool animated);
         virtual void showViewController(UIViewController* viewController);
@@ -141,8 +157,11 @@ namespace UIKit {
         void removeFromParent();
         void childViewControllers(UIViewController& viewController);
         void removeFromParentViewController(UIViewController& viewController);
-
-        UIViewController* create();
+    };
+    
+    class UIViewController: public UIViewControllerProtocol, public internal::AIRef {
+    public:
+            static UIViewController* create();
     };
 }
 #endif /* UIViewController_hpp */
