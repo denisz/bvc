@@ -107,7 +107,7 @@ namespace UIKit {
         BV_CREATE_FUNC(UIViewControllerTransitionManager);
     };
     
-    class UIViewControllerProtocol {
+    class UIViewController: public internal::AIRef {
     public:
         typedef Bolts::BFTask<Bolts::BFBool> Completion;
     private:
@@ -115,20 +115,23 @@ namespace UIKit {
         UIViewControllerTransitioningDelegate* _transitioningDelegate;
         std::vector<UIViewController*> _childControllers;
     protected:
-        UIViewControllerProtocol();
+        UIViewController();
 
         UIViewController* _presentingViewController;
         UIViewController* _presentedViewController;
         UIViewController* _parentViewController;
 
-        virtual bool init();
         virtual UIView* loadView();
         virtual UIViewControllerTransitioningDelegate* loadTransition();
         virtual UIViewController* determinePresentingViewController();
-        
     public:
-        ~UIViewControllerProtocol();
+        virtual bool init();
+        virtual bool initWithSize(const cocos2d::Size &contentSize);
         
+        ~UIViewController();
+        
+        virtual cocos2d::Size preferredContentSize();
+        virtual cocos2d::Size frameForContentController();
 // MARK: life cycle
         virtual void viewDidLoad();
         virtual void viewWillAppear();
@@ -157,11 +160,10 @@ namespace UIKit {
         void removeFromParent();
         void childViewControllers(UIViewController& viewController);
         void removeFromParentViewController(UIViewController& viewController);
-    };
-    
-    class UIViewController: public UIViewControllerProtocol, public internal::AIRef {
+        
     public:
-            static UIViewController* create();
+        static UIViewController* create();
+        static UIViewController* createWithSize(const cocos2d::Size &contentSize);
     };
 }
 #endif /* UIViewController_hpp */

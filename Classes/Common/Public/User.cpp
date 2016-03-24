@@ -11,12 +11,25 @@
 using namespace internal;
 using namespace game;
 
+
+const std::string kKeyUserClassName = "user";
+
 User* User::_currentUser;
 std::mutex User::_mutexCurrentUser;
 
 User* User::create() {
     auto user = new User();
-    if (user->init("user")) {
+    if (user->init(kKeyUserClassName)) {
+        return user;
+    }
+    
+    CC_SAFE_DELETE(user);
+    return nullptr;
+}
+
+User* User::createWithData(BVValueMap &newData) {
+    auto user = new User();
+    if (user->initWithData(kKeyUserClassName, newData)) {
         return user;
     }
     

@@ -19,3 +19,4 @@ IM_REGISTER_PLUGIN(PvPController,           pvpController);
 IM_REGISTER_PLUGIN(BotsController,          botsController);
 IM_REGISTER_PLUGIN(DailyController,         dailyController);
 IM_REGISTER_PLUGIN(MascotController,        mascotController);
+IM_REGISTER_PLUGIN(FightController,         fightController);

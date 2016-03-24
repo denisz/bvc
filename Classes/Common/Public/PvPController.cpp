@@ -99,3 +99,18 @@ CommandRunner::Handler* PvPController::random() {
     
     return runCommandInBackground(*cmd);
 }
+
+CommandRunner::Handler* PvPController::gameResume() {
+    auto cmd = RequestCommand::createWithCommand("game/resume");
+    CC_SAFE_DEFRREDRELEASE(cmd);
+    
+    return runCommandInBackground(*cmd);
+}
+
+CommandRunner::Handler* PvPController::tourneyResume() {
+    auto cmd = RequestCommand::createWithCommand("tournament/status");
+    CC_SAFE_DEFRREDRELEASE(cmd);
+    
+    return runCommandInBackground(*cmd);
+}
+

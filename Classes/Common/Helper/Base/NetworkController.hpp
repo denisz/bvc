@@ -9,7 +9,7 @@
 #ifndef NetworkController_hpp
 #define NetworkController_hpp
 
-#include <stdio.h>
+#include "stdafx.h"
 #include "IReactionController.hpp"
 #include "ICommandController.hpp"
 

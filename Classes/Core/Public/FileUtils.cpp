@@ -34,7 +34,7 @@ void FileUtils::load() {
     auto fullpath = preparePath(kLookupFilesPath);
     auto paths = _module->getValueVectorFromFile(fullpath);
     
-    for (auto path: paths) {
+    for (auto &path: paths) {
         _lookupfiles.push_back(internal::BVValue(path.asString()));
     }
 }
@@ -94,7 +94,7 @@ bool FileUtils::removeFile(const std::string& filename) {
 void FileUtils::findPathsWithPrefix(const std::string& prefix, SearchPaths& paths) {
     auto searchPaths = getSearchPaths();
     
-    for (auto item: searchPaths) {
+    for (auto &item: searchPaths) {
         auto path = item.asString();
         std::size_t found = path.find(prefix);
         if (found!=std::string::npos) {
@@ -116,7 +116,7 @@ void FileUtils::purgeWithPrefix (const std::string &prefix) {
     auto paths = std::vector<std::string>();
     findPathsWithPrefix(prefix, paths);
     
-    for (auto path: paths) {
+    for (auto &path: paths) {
         removeFile(path);
     }
     

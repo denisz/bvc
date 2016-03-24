@@ -25,6 +25,7 @@ namespace game {
         virtual void clearView();
         
         virtual bool init();
+        virtual bool initWithSize(const cocos2d::Size& size);
     };
 }
 

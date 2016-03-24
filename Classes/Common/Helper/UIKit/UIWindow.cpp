@@ -12,12 +12,14 @@ USING_NS_CC;
 using namespace UIKit;
 
 UIWindow::UIWindow()
-: _scene(nullptr) {
+: _scene(nullptr)
+, _rootViewController(nullptr) {
 
 }
 
 UIWindow::~UIWindow() {
     CC_SAFE_RELEASE_NULL(_scene);
+    CC_SAFE_RELEASE_NULL(_rootViewController);
 }
 
 bool UIWindow::init() {
@@ -32,8 +34,12 @@ void UIWindow::viewDidLoad() {
 
 void UIWindow::setRootViewController(UIViewController* controller) {
     if (controller != nullptr) {
+        if (_rootViewController != nullptr) {
+            _rootViewController->removeFromParent();
+            CC_SAFE_RELEASE_NULL(_rootViewController);
+        }
         _rootViewController = controller;
-        this->showViewController(controller);
+        showViewController(controller);
     }
 }
 

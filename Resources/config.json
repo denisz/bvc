@@ -6,27 +6,27 @@
      {
      "width": 0,
      "height": 0,
-     "designWidth": 1024,
-     "designHeight": 768,
+     "designWidth": 768,
+     "designHeight": 1024,
      "paths": [
-       "1024x768/fonts/",
-       "1024x768/ui/",
-       "1024x768/shop/",
-       "1024x768/combat/"
+       "768x1024/fonts/",
+       "768x1024/ui/",
+       "768x1024/shop/",
+       "768x1024/combat/"
      ]
      },
      
      {
-     "width": 1024,
-     "height": 768,
-     "designWidth": 1024,
-     "designHeight": 768,
+     "width": 768,
+     "height": 1024,
+     "designWidth": 768,
+     "designHeight": 1024,
      "paths":
      [
-      "1024x768/fonts/",
-      "1024x768/ui/",
-      "1024x768/shop/",
-      "1024x768/combat/"
+      "768x1024/fonts/",
+      "768x1024/ui/",
+      "768x1024/shop/",
+      "768x1024/combat/"
       ]
      }
      

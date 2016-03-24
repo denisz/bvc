@@ -10,10 +10,24 @@
 #define RootViewController_hpp
 
 #include "stdafx.h"
-#include "UIKit.h"
+#include "FactoryControllers.h"
 
 namespace game {
-    class RootViewController: public UIKit::UINavigationController {};
+    class RootViewController: public GameViewController {
+    private:
+        static RootViewController* _instance;
+        UIKit::UINavigationController* _navigationController;
+        virtual void viewDidLoad();
+        BV_CREATE_FUNC(RootViewController);
+    public:
+        RootViewController();
+        ~RootViewController();
+        
+        void pushViewController(UIKit::UIViewController* viewController, bool animated = true);
+        void popViewControllerAnimated(bool animated = true);
+        
+        static RootViewController* sharedInstance();
+    };
 }
 
 #endif /* RootViewController_hpp */

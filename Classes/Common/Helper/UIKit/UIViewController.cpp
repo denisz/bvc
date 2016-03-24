@@ -137,6 +137,17 @@ UIViewController* UIViewController::create() {
     return nullptr;
 }
 
+UIViewController* UIViewController::createWithSize(const cocos2d::Size &contentSize) {
+    auto ref = new UIViewController();
+    
+    if (ref->initWithSize(contentSize)) {
+        return ref;
+    }
+    
+    CC_SAFE_DELETE(ref);
+    return nullptr;
+}
+
 bool UIViewController::init() {
     auto view = loadView();
     setView(view);
@@ -145,6 +156,15 @@ bool UIViewController::init() {
     setTransition(transition);
 
     return true;
+}
+
+bool UIViewController::initWithSize(const cocos2d::Size &contentSize) {
+    if (init()) {
+        view()->setContentSize(contentSize);
+        return true;
+    }
+    
+    return false;
 }
 
 UIView* UIViewController::loadView() {
@@ -160,6 +180,7 @@ void UIViewController::setView(UIView* view) {
         CC_SAFE_RELEASE_NULL(_view);
     }
     
+    view->setContentSize(preferredContentSize());
     willSetView(view);
     _view = view;
     didSetView(view);
@@ -256,6 +277,8 @@ void UIViewController::showViewController(UIViewController* viewController) {
     
     viewController->willMoveToParentViewController(this);
     viewController->viewWillAppear();
+    childView->setPosition(cocos2d::Vec2::ZERO);
+    childView->setContentSize(frameForContentController());
     parentContainerView->addChild(childView, 1);
     viewController->_presentingViewController = determinePresentingViewController();
     viewController->viewDidAppear();
@@ -295,5 +318,14 @@ void UIViewController::removeFromParent() {
     this->_parentViewController = nullptr;
     this->view()->removeFromParentAndCleanup(true);
     this->viewDidDisappear();
+}
+
+cocos2d::Size UIViewController::preferredContentSize() {
+    auto director = cocos2d::Director::getInstance();
+    return director->getVisibleSize();
+}
+
+cocos2d::Size UIViewController::frameForContentController() {
+    return preferredContentSize();
 }
 

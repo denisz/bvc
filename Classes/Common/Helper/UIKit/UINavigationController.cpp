@@ -98,7 +98,7 @@ UINavigationController::~UINavigationController() {
 }
 
 void UINavigationController::clear() {
-    for (auto item: _stackControllers) {
+    for (auto &item: _stackControllers) {
         CC_SAFE_RELEASE(item);
     }
     _stackControllers.clear();

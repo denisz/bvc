@@ -10,13 +10,17 @@
 #define StarterViewController_hpp
 
 #include "stdafx.h"
-#include "UIViewController.hpp"
+#include "FactoryControllers.h"
 #include "ServiceLocator.hpp"
+#include "User.hpp"
 
 namespace game {
-    class StarterViewController: public UIKit::UIViewController {
+    class StarterViewController: public GameViewController {
+    private:
+        void setupView();
     protected:
         virtual void viewDidLoad();
+        virtual void processOpen();
     public:
         BV_CREATE_FUNC(StarterViewController);
     };

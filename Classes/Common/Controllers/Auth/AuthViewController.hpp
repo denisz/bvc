@@ -10,10 +10,10 @@
 #define AuthViewController_hpp
 
 #include "stdafx.h"
-#include "UIKit.h"
+#include "GameViewController.hpp"
 
 namespace game {
-    class AuthViewController: public UIKit::UIViewController {
+    class AuthViewController: public GameViewController {
     private:
         virtual void viewDidLoad();
     public:

@@ -46,7 +46,7 @@ Router* Router::command(const std::string& path, const Handler& handler) {
 
 Router* Router::command(const std::string& path, std::initializer_list<Handler> handler) {
     auto handlerList = HandlerList();
-    for (auto elem: handler) {
+    for (auto &elem: handler) {
         handlerList.push_back(elem);
     }
     
@@ -55,7 +55,7 @@ Router* Router::command(const std::string& path, std::initializer_list<Handler> 
 }
 
 Router* Router::use(Handlers& handlers) {
-    for (auto elem: handlers) {
+    for (auto &elem: handlers) {
         _handlers[elem.first] = elem.second;
     }
     return this;
@@ -80,7 +80,7 @@ void Router::worker(std::map<std::string, HandlerList>& handlers, const std::str
     auto it = handlers.find(command);
     if (it != handlers.end()) {
         auto handlers = it->second;
-        for (auto worker: handlers) {
+        for (auto &worker: handlers) {
             if (!worker(&res)) {
                 break;
             }

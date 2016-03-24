@@ -30,6 +30,8 @@ namespace common
         };
         
     private:
+        bool _flagMultiThread = true;
+        
         virtual void onError(Response *res);
         virtual void onReceivedMessage(Response *res);
         virtual void onOpen();
@@ -47,6 +49,8 @@ namespace common
         virtual bool init();
         void subscribe();
         void unsubscribe();
+        
+        void setMode(bool multiThread);
         
         void pause();
         void resume();

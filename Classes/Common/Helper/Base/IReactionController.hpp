@@ -28,6 +28,10 @@ namespace game {
     public:
         IReactionController();
         ~IReactionController();
+        
+        void reactionMainThread();
+        void reactionMultiThread();
+        
         virtual bool init();
         virtual bool initWithReaction(common::Reaction* reaction);
         

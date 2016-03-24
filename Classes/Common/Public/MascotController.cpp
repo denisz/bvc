@@ -8,8 +8,8 @@
 
 #include "MascotController.hpp"
 
-
 using namespace game;
+
 bool MascotController::init() {
     return ICommandController::init();
 }

@@ -10,12 +10,26 @@
 #define PlacementSquadViewController_hpp
 
 #include "stdafx.h"
-#include "UIKit.h"
+#include "GameViewController.hpp"
 
 namespace game {
-    class PlacementSquadViewController: public UIKit::UIViewController {
+    class PlacementSquadViewController: public GameViewController {
     public:
-        BV_CREATE_FUNC(PlacementSquadViewController);
+        class Delegate {
+        public:
+            virtual void handlerRequestPassSelection() {};
+            virtual void handlerRequestSelectionSquad(const BVValueVector &selection) {};
+        };
+    private:
+        virtual void viewDidLoad();
+        void didTapPass(Ref* sender);
+    public:
+        virtual bool init();
+        virtual bool initWithResponseGameSetup(Response* res);
+        PlacementSquadViewController();
+        ~PlacementSquadViewController();
+        Delegate* placementDelegate;
+        static PlacementSquadViewController* createWithResponseGameSetup(Response* res);
     };
 }
 

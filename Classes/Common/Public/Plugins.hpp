@@ -19,6 +19,7 @@
 #include "BotsController.hpp"
 #include "DailyController.hpp"
 #include "MascotController.hpp"
+#include "FightController.hpp"
 
 namespace game {
     class Plugins {
@@ -32,7 +33,7 @@ namespace game {
         REGISTER_GETTER_PLUGIN(BotsController,          botsController);
         REGISTER_GETTER_PLUGIN(DailyController,         dailyController);
         REGISTER_GETTER_PLUGIN(MascotController,        mascotController);
-        
+        REGISTER_GETTER_PLUGIN(FightController,         fightController);
     };
 }
 

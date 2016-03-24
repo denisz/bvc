@@ -51,7 +51,7 @@ void GCD::update(float dt)
     
     _UIWsMessageQueueMutex.unlock();
     
-    for (auto msg : messages) {
+    for (auto &msg : messages) {
         msg();
     }
 }

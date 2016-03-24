@@ -10,11 +10,11 @@
 #define BaseTournamentController_hpp
 
 #include "stdafx.h"
-#include "GameController.hpp"
+#include "GameViewController.hpp"
 
 
 namespace game {
-    class BaseTournamentController: public GameController {
+    class BaseTournamentController: public GameViewController {
     public:
         virtual bool init();
     };

@@ -10,10 +10,10 @@
 #define ArenaViewController_hpp
 
 #include "stdafx.h"
-#include "UIKit.h"
+#include "GameViewController.hpp"
 
 namespace game {
-    class ArenaViewController: public UIKit::UIViewController {
+    class ArenaViewController: public GameViewController {
     public:
         BV_CREATE_FUNC(ArenaViewController);
     };

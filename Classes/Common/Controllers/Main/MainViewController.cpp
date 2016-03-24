@@ -7,15 +7,41 @@
 //
 
 #include "MainViewController.hpp"
-USING_NS_CC;
 
+USING_NS_CC;
 using namespace game;
 using namespace UIKit;
+
+template<class T>
+class DebugControllerDelegate: public DataSourceControllerDelegate, public DataSourceViewControllerReload {
+    void didChange(DataSourceController* ds, DataSourceControllerOptions options, internal::BVValue &value) {
+        auto collection = dynamic_cast<T*>(ds);
+        std::cout << "Change collection " << collection->count() << std::endl;
+        reloadTableView();
+    }
+};
+
+
+MainViewController:: MainViewController() {
+    auto pvplist = PvPAvailableController::create();
+    pvplist->delegate = new DebugControllerDelegate<PvPAvailableController>();
+    pvplist->reloadData();
+    
+    auto gamelist = GameListController::create();
+    gamelist->delegate = new DebugControllerDelegate<GameListController>();
+    gamelist->reloadData();
+    
+    auto accountonline = AccountOnlineController::create();
+    accountonline->delegate = new DebugControllerDelegate<AccountOnlineController>();
+    accountonline->reloadData();
+}
 
 void MainViewController::viewDidLoad() {
     auto layout = ui::RelativeBox::create();
     layout->setCascadeOpacityEnabled(true);
-    layout->setContentSize(Size(1024, 768));
+    layout->setContentSize(preferredContentSize());
+//    layout->setBackGroundColor(Color3B::BLUE);
+//    layout->setBackGroundColorType(cocos2d::ui::Layout::BackGroundColorType::SOLID);
     layout->setPosition(Vec2(0,0));
     view()->addChild(layout);
     
@@ -80,19 +106,19 @@ void MainViewController::viewDidLoad() {
     menu->setLayoutParameter(lpw);
     
     layout->addChild(menu);
+    
+    auto gameFlowController = GameFlowViewController::createWithSize(preferredContentSize());
+    showViewController(gameFlowController);
 }
 
 void MainViewController::onDidTapBattlesWithPlayers(Ref* sender) {
     std::cout << "onDidTapBattlesWithPlayers" << std::endl;
+    
 }
 
 void MainViewController::onDidTapRandom(Ref* sender) {
     std::cout << "onDidTapRandom" << std::endl;
-    
-    auto actionClient = ServiceLocator::actionsClient();
-    auto event = actionClient->createEventWithCommand("init/randomBattle");
-    CC_SAFE_AUTORELEASE(event);
-    actionClient->call(event);
+    Plugins::pvpController()->random();
 }
 
 void MainViewController::onDidTapTourney(Ref* sender) {
@@ -105,4 +131,26 @@ void MainViewController::onDidTapClans(Ref* sender) {
 
 void MainViewController::onDidTapBattleWithBots(Ref* sender) {
     std::cout << "onDidTapBattleWithBots" << std::endl;
+    
+    Plugins::botsController()->getAsync()->continueWithBlock([](CommandRunner::Handler *task) ->CommandRunner::Handler* {
+        
+        if (!task->hasError()) {
+            auto res = task->result();
+            auto list = res->getVectorByPointer("/params/bots");
+            auto botUser = User::create();
+            CC_SAFE_AUTORELEASE(botUser);
+            
+            for (auto item:list) {
+                auto bot = item.asValueMap();
+                auto profile = bot["profile"].asValueMap();
+                botUser->mergeFromServer(profile, true);
+                Plugins::pvpController()->initWithBot(botUser->objectId());
+                break;
+            }
+        }
+        
+        
+        return nullptr;
+    });
+    
 }

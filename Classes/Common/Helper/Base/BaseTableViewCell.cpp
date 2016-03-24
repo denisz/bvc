@@ -25,6 +25,11 @@ bool BaseTableViewCell::init() {
     return true;
 }
 
+bool BaseTableViewCell::initWithSize(const cocos2d::Size& size) {
+    setContentSize(size);
+    return init();
+}
+
 void BaseTableViewCell::viewDidLoad() {
 
 }

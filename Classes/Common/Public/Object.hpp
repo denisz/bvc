@@ -22,24 +22,27 @@ namespace game {
         std::string _classname;
         BVValueMap* _serverData;
         std::string _objectId;
-        virtual bool init(const std::string& classname = "", const std::string& objectId = "");
+        virtual bool init(const std::string& classname = "Object", const std::string& objectId = "");
+        virtual bool initWithData(const std::string& classname, BVValueMap &newData);
         Object();
         std::mutex _mutex;
     public:
         ~Object();
         bool containsKey(const std::string &key) const;
         const std::string objectId() const;
+        const int objectIdAsInt() const;
         
         const BVValue valueForKey(const std::string &key, const int defVal) const;
         const BVValue valueForKey(const std::string &key, const std::string &defVal) const;
         const BVValue valueForKey(const std::string &key, const BVValue &defVal = BVValue::Null) const;
         
-        void setObject(BVValue &value, const std::string &key);
-        void setObject(BVValueMap &value, const std::string &key);
-        void setObject(BVValueVector &value, const std::string &key);
+        void setObject(const BVValue &value, const std::string &key);
+        void setObject(const BVValueMap &value, const std::string &key);
+        void setObject(const BVValueVector &value, const std::string &key);
         
         void clear();
-        void mergeFromServer(BVValueMap &newData,  bool clear = false);
+        void mergeFromServer(const BVValue &newData,  bool clear = false);
+        void mergeFromServer(const BVValueMap &newData,  bool clear = false);
         
         BVValueMap* data();
         
@@ -48,6 +51,7 @@ namespace game {
         bool operator== (const Object& v);
         
         static Object* createWithName(const std::string& classname);
+        static Object* createWithNameAndData(const std::string& classname, BVValueMap &newData);
     };
 }
 

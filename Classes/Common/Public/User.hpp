@@ -42,6 +42,7 @@ namespace game {
         bool isCurrentUser(User& user);
         
         static User* create();
+        static User* createWithData(BVValueMap &newData);
     };
 }
 

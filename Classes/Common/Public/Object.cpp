@@ -28,16 +28,31 @@ bool Object::init(const std::string &classname, const std::string& objectId) {
     return true;
 }
 
-Object* Object::createWithName(const std::string &classname) {
-    auto obj = new Object();
-    if (obj->init(classname)) {
-        return obj;
-    }
-    CC_SAFE_DELETE(obj);
-    return obj;
+bool Object::initWithData(const std::string& classname, BVValueMap &newData) {
+    _classname = classname;
+    mergeFromServer(newData);
+    return true;
 }
 
-void Object::mergeFromServer(BVValueMap &newData, bool clear) {
+Object* Object::createWithNameAndData(const std::string &classname, BVValueMap &newData) {
+    auto ref = new Object();
+    if (ref->initWithData(classname, newData)) {
+        return ref;
+    }
+    CC_SAFE_DELETE(ref);
+    return nullptr;
+}
+
+Object* Object::createWithName(const std::string &classname) {
+    auto ref = new Object();
+    if (ref->init(classname)) {
+        return ref;
+    }
+    CC_SAFE_DELETE(ref);
+    return nullptr;
+}
+
+void Object::mergeFromServer(const BVValueMap &newData, bool clear) {
     if (clear) {
         this->clear();
     }
@@ -47,8 +62,18 @@ void Object::mergeFromServer(BVValueMap &newData, bool clear) {
     }
 }
 
+void Object::mergeFromServer(const BVValue &newData,  bool clear) {
+    if (newData.getType() == BVValue::Type::MAP) {
+        return mergeFromServer(newData.asValueMap(), clear);
+    }
+}
+
 const std::string Object::objectId() const {
     return _objectId;
+}
+
+const int Object::objectIdAsInt() const {
+    return std::stoi(objectId());
 }
 
 bool Object::containsKey(const std::string& key) const {
@@ -82,14 +107,14 @@ const BVValue Object::valueForKey(const std::string &key, const int defvalue) co
     return valueForKey(key, BVValue(defvalue));
 }
 
-void Object::setObject(BVValue &value, const std::string &key) {
+void Object::setObject(const BVValue &value, const std::string &key) {
     std::lock_guard<std::mutex> lock(_mutex);
     
     if (_serverData != nullptr) {
         (*_serverData)[key] = value;
         
         if (key == _objectIdKey) {
-            _objectId = value.asString();
+            _objectId = std::to_string(value.asInt());
         }
     }
 }
@@ -98,12 +123,12 @@ BVValueMap* Object::data() {
     return _serverData;
 }
 
-void Object::setObject(BVValueMap &value, const std::string &key) {
+void Object::setObject(const BVValueMap &value, const std::string &key) {
     auto map = BVValue(value);
     return setObject(map, key);
 }
 
-void Object::setObject(BVValueVector &value, const std::string &key) {
+void Object::setObject(const BVValueVector &value, const std::string &key) {
     auto vector = BVValue(value);
     return setObject(vector, key);
 }

@@ -114,7 +114,7 @@ void CollectionController::removeModel(BVValue& obj) {
     if (type == BVValue::Type::VECTOR) {
         auto vector = obj.asValueVector();
         
-        for (auto item: vector)
+        for (auto &item: vector)
             removeModel(item);
     } else {
         auto pred = std::bind(compareBVValueMapById, obj, std::placeholders::_1);
@@ -135,13 +135,15 @@ void CollectionController::updateModel(BVValue& obj) {
 
     if (type == BVValue::Type::VECTOR) {
         auto vector = obj.asValueVector();
-        for (auto item: vector)
+        for (auto &item: vector)
             updateModel(item);
     } else {
         auto pred = std::bind(compareBVValueMapById, obj, std::placeholders::_1);
         auto it = std::find_if(_objects.begin(), _objects.end(), pred);
         if (it != _objects.end())
             *it = obj;
+        else
+            insertModel(obj);
     }
     
     if (delegate != nullptr)

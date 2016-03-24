@@ -28,7 +28,7 @@ namespace UIKit {
         void setRootViewController(UIViewController* controller);
         cocos2d::Scene* scene();
         
-        BV_CREATE_FUNC(UIWindow);
+        BV_CREATE_FUNC_WITH_SIZE(UIWindow);
     };
 }
 #endif /* UIWindow_hpp */

@@ -10,8 +10,14 @@
 #define MainViewController_hpp
 
 #include "stdafx.h"
-#include "UIViewController.hpp"
+#include "FactoryControllers.h"
 #include "ServiceLocator.hpp"
+
+#include "PvPAvailableController.hpp"
+#include "GameListController.hpp"
+#include "PvPAvailableView.hpp"
+#include "AccountOnlineController.hpp"
+
 
 namespace game {
     class MainViewController: public UIKit::UIViewController {
@@ -24,6 +30,7 @@ namespace game {
     protected:
         virtual void viewDidLoad();
     public:
+        MainViewController();
         BV_CREATE_FUNC(MainViewController);
     };
 }

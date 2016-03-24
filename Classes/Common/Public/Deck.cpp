@@ -11,9 +11,11 @@
 using namespace internal;
 using namespace game;
 
+const std::string kKeyDeckClassName = "user";
+
 Deck* Deck::create() {
     auto ref = new Deck();
-    if (ref->init("deck")) {
+    if (ref->init(kKeyDeckClassName)) {
         return ref;
     }
     
@@ -24,7 +26,7 @@ Deck* Deck::create() {
 Deck* Deck::createWithCards(BVValueMap &cards) {
     auto ref = new Deck();
     
-    if (ref->init("deck")) {
+    if (ref->init(kKeyDeckClassName)) {
         ref->setCards(cards);
         return ref;
     }
@@ -69,9 +71,18 @@ void Deck::setCards(BVValueMap& cards) {
     setObject(cards, "cards");
 }
 
-void Deck::setOwner() {}
+void Deck::setOwner() {
+}
 
-void Deck::getCards() {}
+void Deck::getCards() {
+//    auto cards = std::map<std::string, int>();
+//    
+//    return cards;
+}
+
+std::string Deck::localizedName() {
+    return "";
+}
 
 bool Deck::containCard(const std::string& card) {
     return true;

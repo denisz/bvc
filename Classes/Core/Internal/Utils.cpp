@@ -16,6 +16,7 @@ BVValueVector converterValueVector(Value &json) {
     
     if (json.IsArray()) {
         for (auto itr = json.Begin(); itr != json.End(); ++itr) {
+            //replace .emplace()
             vector.push_back(converterValue(*itr));
         }
     }
@@ -99,7 +100,7 @@ bool replace(std::string& str, const std::string& from, const std::string& to) {
 }
 
 void mergeObject(rapidjson::Document& target, const BVValueMap& map) {
-    for (auto item: map) {
+    for (auto &item: map) {
         auto key    = Pointer(("/" + item.first).c_str());
         auto value  = item.second;
         auto type   = value.getType();
@@ -127,6 +128,29 @@ void mergeObject(rapidjson::Value& target, rapidjson::Value& source, rapidjson::
     for (auto itr = source.MemberBegin(); itr != source.MemberEnd(); ++itr)
         target.AddMember(itr->name, itr->value, allocator);
 }
+
+void extendBVValueMap(BVValueMap& destination, const BVValueMap& source) {
+    for (auto& item: source) {
+        destination[item.first] = item.second;
+    }
+}
+
+void extendBVValue(BVValue& destination, const BVValueMap& source) {
+    auto typeDestination    = destination.getType();
+    if (typeDestination == BVValue::Type::MAP) {
+        extendBVValueMap(destination.asValueMap(), source);
+    }
+}
+
+void extendBVValue(BVValue& destination, const BVValue& source) {
+    auto typeDestination    = destination.getType();
+    auto typeSource         = source.getType();
+    
+    if (typeDestination == typeSource && typeSource == BVValue::Type::MAP) {
+        extendBVValueMap(destination.asValueMap(), source.asValueMap());
+    }
+}
+
 
 std::string now() {
     time_t timestamp;

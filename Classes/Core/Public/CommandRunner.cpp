@@ -40,12 +40,12 @@ CommandRunner::~CommandRunner() {
     CC_SAFE_RELEASE_NULL(_networkClient);
     CC_SAFE_RELEASE_NULL(_reaction);
     
-    for (auto item: _callbacks) {
+    for (auto &item: _callbacks) {
         CC_SAFE_RELEASE(item.second);
     }
     _callbacks.clear();
     
-    for (auto item: _completed_callbacks) {
+    for (auto &item: _completed_callbacks) {
         CC_SAFE_RELEASE(item);
     }
     _completed_callbacks.clear();

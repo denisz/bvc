@@ -16,6 +16,29 @@ using namespace game;
 using namespace UIKit;
 
 void StarterViewController::viewDidLoad() {
+    ServiceLocator::network()->connect(kServerUrl);
+}
+
+void StarterViewController::processOpen() {
+    User::logInWithUsernameInBackground("asd@asd.ru", "123456")->continueWithBlock([&](CommandRunner::Handler *task) -> CommandRunner::Handler* {
+        
+        auto user = User::currentUser();
+
+        std::stringstream message;
+        message << "Privet " << user->nick();
+        
+        Plugins::chatController()->sendPublicMessageAsync(message.str());
+        
+        return nullptr;
+    })->continueWithBlock([&](CommandRunner::Handler *task) -> CommandRunner::Handler* {
+        GCD::sendMessageToUIThread([&](){
+            this->setupView();
+        });
+        return nullptr;
+    });
+}
+
+void StarterViewController::setupView() {
     auto layout = ui::Layout::create();
     layout->setPosition(Vec2(0,0));
     layout->setCascadeOpacityEnabled(true);
@@ -34,12 +57,10 @@ void StarterViewController::viewDidLoad() {
     btn->setTitleText("Start");
     
     btn->addClickEventListener([](Ref* sender){
-        auto actionClient = ServiceLocator::actionsClient();
-        auto event = actionClient->createEventWithCommand("start");
-        CC_SAFE_AUTORELEASE(event);
-        actionClient->call(event);
+        auto controller     = MainViewController::create();
+        auto rootController = RootViewController::sharedInstance();
+        rootController->pushViewController(controller);
     });
-    
     
     layout->addChild(btn);
 }

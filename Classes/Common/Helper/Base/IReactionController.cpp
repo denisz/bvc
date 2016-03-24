@@ -39,6 +39,16 @@ bool IReactionController::initWithReaction(Reaction* reaction) {
     return true;
 }
 
+void IReactionController::reactionMainThread() {
+    if (_reaction != nullptr)
+        _reaction->setMode(false);
+}
+
+void IReactionController::reactionMultiThread() {
+    if (_reaction != nullptr)
+        _reaction->setMode(true);
+}
+
 void IReactionController::processMessage(internal::network::Response& res) {
 }
 
@@ -58,8 +68,12 @@ void IReactionController::didUnsubscribe() {
 }
 
 void IReactionController::subscribe() {
-    _reaction->subscribe();
+    if (_reaction != nullptr)
+        _reaction->subscribe();
 }
 void IReactionController::unsubscribe() {
-    _reaction->unsubscribe();
+    if (_reaction != nullptr)
+        _reaction->unsubscribe();
 }
+
+

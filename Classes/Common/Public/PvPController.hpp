@@ -29,6 +29,8 @@ namespace game {
         CommandRunner::Handler* hasCreated();
         CommandRunner::Handler* hasRandom();
         CommandRunner::Handler* random();
+        CommandRunner::Handler* gameResume();
+        CommandRunner::Handler* tourneyResume();
         
         virtual bool init();
         BV_CREATE_FUNC(PvPController);

@@ -47,7 +47,7 @@ void ActionsRouter::process(internal::ActionsClient::Event* event) {
     auto command = event->command();
     CC_SAFE_RETAIN(event);
     
-    for (auto worker: _handlers) {
+    for (auto &worker: _handlers) {
         if (worker.path == command || worker.path == PATH_GLOBAL_ACTION) {
             worker.handler(event);
         }

@@ -20,4 +20,7 @@ rapidjson::Document converterToRapidVector(const internal::BVValueVector& vector
 
 void mergeObject(rapidjson::Document& target, const internal::BVValueMap& map);
 
+void extendBVValueMap(internal::BVValueMap& destination, const internal::BVValueMap& source);
+void extendBVValue(internal::BVValue& destination, const internal::BVValue& source);
+void extendBVValue(internal::BVValue& destination, const internal::BVValueMap& source);
 #endif /* Utils_hpp */

@@ -47,7 +47,7 @@ namespace Bolts {
         BFSheduler* sheduler();
         BFSheduler* createSheduler(uint tCount = 3);
         
-        static BFExecutor* defaultExecutor (uint thCount = 1, uint tCount = 1) {
+        static BFExecutor* defaultExecutor (uint thCount = 1, uint tCount = 3) {
             std::lock_guard<std::mutex> lock(_lock);
             if (BFExecutor::_defaultExecutor == nullptr) {
                 BFExecutor::_defaultExecutor = new BFExecutor(thCount, tCount);

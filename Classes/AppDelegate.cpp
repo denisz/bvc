@@ -4,7 +4,7 @@ USING_NS_CC;
 using namespace game;
 
 static float scale = 0.5;
-static cocos2d::Size designResolutionSize = cocos2d::Size(1024, 768) * scale;
+static cocos2d::Size designResolutionSize = cocos2d::Size(768, 1024) * scale;
 
 AppDelegate::AppDelegate() {
 
@@ -40,14 +40,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     ServiceLocator::create();
     
-    const auto starter  = StarterController::create();
-    const auto root     = RootController::getInstance();
-    const auto rootVC   = root->getViewController();
+    const auto starter  = StarterViewController::create();
+    const auto root     = RootViewController::sharedInstance();
     
-    root->presentController(starter);
+    root->pushViewController(starter);
     
-    window = UIKit::UIWindow::create();
-    window->setRootViewController(rootVC);
+    window = UIKit::UIWindow::createWithSize(director->getVisibleSize());
+    window->setRootViewController(root);
     director->runWithScene(window->scene());
 
     return true;

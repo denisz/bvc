@@ -9,6 +9,16 @@
 #ifndef MockNetworkClient_hpp
 #define MockNetworkClient_hpp
 
-#include <stdio.h>
+#include "stdafx.h"
+#include "NetworkClient.hpp"
+
+namespace internal {
+    class MockNetworkClient: public AIRef {
+    private:
+        virtual bool init();
+    public:
+        static MockNetworkClient* createWithFile(const std::string& filename);
+    };
+}
 
 #endif /* MockNetworkClient_hpp */

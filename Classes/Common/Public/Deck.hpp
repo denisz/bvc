@@ -15,12 +15,14 @@
 //реализовать список колод пользователя
 namespace game {
     class Deck: public game::Object {
+    public:
         void setCards(BVValueMap& cards);
         void setOwner();
         void getCards();
         bool containCard(const std::string& card);
         bool isOwnerCurrentUser();
         void setName();
+        std::string localizedName();
         
         CommandRunner::Handler* saveInBackground();
         void saveEventually();

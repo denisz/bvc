@@ -10,16 +10,30 @@
 #define FactoryControllers_h
 
 #include "stdafx.h"
-#include "GameController.hpp"
+#include "GameViewController.hpp"
 
 namespace game {
-    class RootController;
-    class StarterController;
-    class MainController;
+    class RootViewController;
+    class StarterViewController;
+    class MainViewController;
+    class ArenaViewController;
+    class FightViewController;
+    class TutorialFightViewController;
+    class GameFlowViewController;
+    class ChooseDeckViewController;
+    class PlacementSquadViewController;
+    class BattleViewController;
 }
 
-#include "StarterController.hpp"
-#include "MainController.hpp"
-#include "RootController.hpp"
+#include "StarterViewController.hpp"
+#include "ArenaViewController.hpp"
+#include "ChooseDeckViewController.hpp"
+#include "PlacementSquadViewController.hpp"
+#include "BattleViewController.hpp"
+#include "GameFlowViewController.hpp"
+#include "MainViewController.hpp"
+#include "RootViewController.hpp"
+#include "FightViewController.hpp"
+//#include "TutorialFightViewController.hpp"
 
 #endif /* FactoryControllers_h */

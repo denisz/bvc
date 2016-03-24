@@ -82,7 +82,11 @@ void Reaction::onError(Response *res) {
 void Reaction::onReceivedMessage(Response *res) {
     if (_threadPool != nullptr) {
         CC_SAFE_RETAIN(res);
-        _threadPool->addTask(BV_CALLBACK_1(Reaction::handlerReceivedMessage, this), res);
+        if (_flagMultiThread) {
+            _threadPool->addTask(BV_CALLBACK_1(Reaction::handlerReceivedMessage, this), res);
+        } else {
+            handlerReceivedMessage(res);
+        }
     }
 }
 
@@ -130,3 +134,6 @@ void Reaction::stop() {
     }
 }
 
+void Reaction::setMode(bool multiThread) {
+    _flagMultiThread = multiThread;
+}

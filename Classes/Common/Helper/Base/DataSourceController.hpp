@@ -23,10 +23,11 @@ namespace game {
     };
     
     enum class DataSourceControllerOptions {INSERT, RELOAD, UPDATE, DELETE};
+    typedef DataSourceControllerOptions DSOptions;
     
     class DataSourceViewControllerReload {
     protected:
-        void reloadRun() {
+        void reloadTableView() {
             if (reloadCallback) reloadCallback();
         }
     public:
@@ -35,8 +36,8 @@ namespace game {
     
     class DataSourceControllerDelegate {
     public:
-        virtual void didChange(DataSourceController* ds, DataSourceControllerOptions options, BVValue &value) {};
-        virtual void willChange(DataSourceController* ds, DataSourceControllerOptions options, BVValue &value) {};
+        virtual void didChange(DataSourceController* ds, DSOptions options, BVValue &value) {};
+        virtual void willChange(DataSourceController* ds, DSOptions options, BVValue &value) {};
     };
     
     class DataSourceController: public NetworkController {
