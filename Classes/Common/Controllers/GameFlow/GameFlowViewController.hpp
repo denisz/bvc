@@ -23,7 +23,6 @@ namespace game {
         bool commandTourneySignIn(internal::network::Response* res);
         bool commandTourneyStatus(internal::network::Response* res);
 
-
         virtual void viewDidLoad();
     protected:
         virtual bool init();

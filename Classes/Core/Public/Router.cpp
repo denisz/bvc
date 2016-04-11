@@ -38,19 +38,29 @@ Router* Router::create() {
 }
 
 Router* Router::command(const std::string& path, const Handler& handler) {
-    auto handlerList = HandlerList();
-    handlerList.push_back(handler);
-    this->_handlers[path] = handlerList;
+    if (this->_handlers.find(path) != this->_handlers.end()) {
+        auto tmp = this->_handlers[path];
+        tmp.push_back(handler);
+    } else {
+        auto handlerList = HandlerList();
+        handlerList.push_back(handler);
+        this->_handlers.emplace(path, handlerList);
+    }
+    
     return this;
 }
 
-Router* Router::command(const std::string& path, std::initializer_list<Handler> handler) {
-    auto handlerList = HandlerList();
-    for (auto &elem: handler) {
-        handlerList.push_back(elem);
+Router* Router::command(const std::string& path, std::initializer_list<Handler> handlers) {
+    if (this->_handlers.find(path) != this->_handlers.end()) {
+        auto tmp = this->_handlers[path];
+        tmp.insert( tmp.end(), handlers.begin(), handlers.end() );
+        this->_handlers[path] = tmp;
+    } else {
+        auto handlerList = HandlerList();
+        handlerList.insert(handlerList.end(), handlers.begin(), handlers.end());
+        this->_handlers.emplace(path, handlerList);
     }
     
-    this->_handlers[path] = handlerList;
     return this;
 }
 
@@ -75,15 +85,30 @@ void Router::error(Response& res) {
     }
 }
 
+void Router::exception(Response& res, Error& error) {
+    auto handlers = this->_handlers;
+    auto it = handlers.find(PATH_ERROR);
+    if (it != handlers.end()) {
+        auto handlers = it->second;
+        for (auto &worker: handlers) {
+            worker(&res);
+        }
+    }
+}
+
 void Router::worker(std::map<std::string, HandlerList>& handlers, const std::string& command, Response& res) {
 
     auto it = handlers.find(command);
     if (it != handlers.end()) {
         auto handlers = it->second;
-        for (auto &worker: handlers) {
-            if (!worker(&res)) {
-                break;
+        try {
+            for (auto &worker: handlers) {
+                if (!worker(&res)) {
+                    break;
+                }
             }
+        } catch(Error& err) {
+            exception(res, err);
         }
     }
 }

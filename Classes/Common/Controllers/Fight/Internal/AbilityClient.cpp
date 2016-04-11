@@ -11,11 +11,35 @@
 using namespace game;
 
 
-AbilityClient::AbilityClient() {
+AbilityClient::AbilityClient()
+: delegate(nullptr) {
 }
 
 AbilityClient::~AbilityClient() {
+    delegate = nullptr;
 }
+
+AbilityClient* AbilityClient::createWithDelegate(Delegate* delegate) {
+    auto ref = new AbilityClient();
+    if (ref->init()) {
+        ref->delegate = delegate;
+        return ref;
+    }
+    
+    CC_SAFE_DELETE(ref);
+    return nullptr;
+}
+
+AbilityClient* AbilityClient::create() {
+    auto ref = new AbilityClient();
+    if (ref->init()) {
+        return ref;
+    }
+    
+    CC_SAFE_DELETE(ref);
+    return nullptr;
+}
+
 
 bool AbilityClient::init() {
     return true;
@@ -42,6 +66,9 @@ bool AbilityClient::complete() {
 }
 
 bool AbilityClient::pass() {
+    if (delegate != nullptr) {
+        delegate->doPass();
+    }
     return true;
 }
 

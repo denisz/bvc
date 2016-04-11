@@ -14,6 +14,15 @@
 #include "DataSourceController.hpp"
 
 namespace game {
+    class DataSourceViewControllerReload {
+    protected:
+        void reloadTableView() {
+            if (reloadCallback) reloadCallback();
+        }
+    public:
+        std::function<void()> reloadCallback;
+    };
+    
     class IDataSourceViewController {
     protected:
         DataSourceViewControllerReload* _reloadDelegate;

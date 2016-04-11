@@ -17,18 +17,23 @@ using namespace common;
 namespace game {
     class CurrentUserController: public internal::AIRef, public ICommandController {
     public:
-        CommandRunner::Handler* logInAsync(const std::string &login, const std::string &password);
-        CommandRunner::Handler* signUpAsync(const std::string &login, const std::string &password);
+        
+        
+        CommandRunner::Handler* friends();
+        CommandRunner::Handler* blacklist();
         CommandRunner::Handler* logOutAsync();
+        
         CommandRunner::Handler* requestPasswordResetAsync();
         
-        CommandRunner::Handler* removeFriend(const std::string &profileId);
         CommandRunner::Handler* addFriend(const std::string &profileId);
-        CommandRunner::Handler* friends();
+        CommandRunner::Handler* removeFriend(const std::string &profileId);
         
-        CommandRunner::Handler* removeFromBlacklist(const std::string &profileId);
+        
         CommandRunner::Handler* addToBlacklist(const std::string &profileId);
-        CommandRunner::Handler* blacklist();
+        CommandRunner::Handler* removeFromBlacklist(const std::string &profileId);
+        
+        CommandRunner::Handler* logInAsync(const std::string &login, const std::string &password);
+        CommandRunner::Handler* signUpAsync(const std::string &login, const std::string &password);
         
         bool init();
         BV_CREATE_FUNC(CurrentUserController);

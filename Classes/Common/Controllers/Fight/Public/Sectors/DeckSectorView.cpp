@@ -8,8 +8,13 @@
 
 #include "DeckSectorView.hpp"
 
-
+USING_NS_CC;
 using namespace game;
+using namespace UIKit;
+
 
 void DeckSectorView::viewDidLoad() {
+}
+
+void DeckSectorView::animateTransition(FightCardContextTransitioning* transitionContext) {
 }

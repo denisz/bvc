@@ -182,20 +182,16 @@ UIViewController::Completion* UINavigationController::pushViewController(UIViewC
         throw Error("The `ViewController` has already been added to this navigation controller");
     }
 
-    auto promise    = UIViewControllerContextTransitioning::Promise::taskCompletionSource();
-    CC_SAFE_DEFRREDRELEASE(promise);
-    
-    auto task       = promise->task();
     auto presented  = viewController;
     auto source     = this;
     auto presenting = this->visibleViewController;
     
     auto context    = new UIViewControllerContextTransitioning();
+    auto task       = context->task();
     CC_SAFE_AUTORELEASE(context);
     
     context->setFromViewController(presenting);
     context->setToViewController(presented);
-    context->setPromise(promise);
     
     this->showViewController(viewController);
     this->visibleViewController = presented;
@@ -224,20 +220,14 @@ UIViewController::Completion* UINavigationController::popViewControllerAnimated(
         return nullptr;
     
     auto viewController = _stackControllers.front();
-    
-    auto promise        = UIViewControllerContextTransitioning::Promise::taskCompletionSource();
-    CC_SAFE_DEFRREDRELEASE(promise);
-    
-    auto task           = promise->task();
     auto presented      = viewController;
     auto presenting     = viewController->presentingViewController();
-    
     auto context        = new UIViewControllerContextTransitioning();
+    auto task           = context->task();
     CC_SAFE_AUTORELEASE(context);
 
     context->setFromViewController(presenting);
     context->setToViewController(presented);
-    context->setPromise(promise);
     
     this->visibleViewController = presenting;
     
@@ -266,19 +256,14 @@ UIViewController::Completion* UINavigationController::popViewController(UIViewCo
         return popViewControllerAnimated(animated);
     }
 
-    auto promise        = UIViewControllerContextTransitioning::Promise::taskCompletionSource();
-    CC_SAFE_DEFRREDRELEASE(promise);
-    
-    auto task           = promise->task();
     auto presented      = viewController;
     auto presenting     = viewController->presentingViewController();
-    
     auto context        = new UIViewControllerContextTransitioning();
+    auto task           = context->task();
     CC_SAFE_AUTORELEASE(context);
     
     context->setFromViewController(presenting);
     context->setToViewController(presented);
-    context->setPromise(promise);
     
     this->visibleViewController = presenting;
     

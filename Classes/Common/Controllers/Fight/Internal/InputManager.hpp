@@ -12,6 +12,14 @@
 #include "stdafx.h"
 
 namespace game {
+//    class InputManagerEvents: public BaseObserverProtocol {
+//    public:
+//        virtual void didTapCard(int cardid, CancellationToken &cancel) {};
+//        virtual void didTapCell(int x, int y, CancellationToken& cancel) {};
+//        virtual void didTapPass(CancellationToken& cancel) {};
+//        virtual void didTapComplete(CancellationToken& cancel) {};
+//    };
+    
     class InputManager: public internal::AIRef {
     public:
         class CancellationToken {
@@ -29,14 +37,14 @@ namespace game {
         
         class Delegate {
         public:
-            virtual void didTapCard(int cardid, CancellationToken &cancel) {};
-            virtual void didTapCell(int x, int y, CancellationToken& cancel) {};
             virtual void didTapPass(CancellationToken& cancel) {};
             virtual void didTapComplete(CancellationToken& cancel) {};
+            virtual void didTapCard(int cardid, CancellationToken &cancel) {};
+            virtual void didTapCell(int x, int y, CancellationToken& cancel) {};
         };
     private:
-        std::forward_list<Delegate*> _delegates;
         bool _enabled;
+        std::forward_list<Delegate*> _delegates;
     public:
         InputManager();
        ~InputManager();
@@ -44,11 +52,10 @@ namespace game {
         void addDelegate(Delegate *delegate);
         void removeDelegate(Delegate *delegate);
         
-        void didTapCard(int card);
-        void didTapCell(int x, int y);
         void didTapPass();
         void didTapComplete();
-        
+        void didTapCard(int card);
+        void didTapCell(int x, int y);
         void setEnabled(bool enabled);
         
         bool init();

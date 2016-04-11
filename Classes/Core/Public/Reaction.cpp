@@ -75,7 +75,11 @@ void Reaction::unsubscribe() {
 void Reaction::onError(Response *res) {
     if (_threadPool != nullptr) {
         CC_SAFE_RETAIN(res);
-        _threadPool->addTask(BV_CALLBACK_1(Reaction::handlerErrorMessage, this), res);
+        if (_flagMultiThread) {
+            _threadPool->addTask(BV_CALLBACK_1(Reaction::handlerErrorMessage, this), res);
+        } else {
+            handlerErrorMessage(res);
+        }
     }
 }
 

@@ -45,6 +45,9 @@
          contextName = "common::Reaction::onReceivedMessage(internal::network::Response&amp;):Reaction.cpp">
       </ContextState>
       <ContextState
+         contextName = "game::FightViewController::contextStepChooseDeck(game::ContextFight*)::$_0::operator()() const:FightViewController.cpp">
+      </ContextState>
+      <ContextState
          contextName = "UIKit::UINavigationController::popToViewController(UIKit::UIViewController*, bool):UINavigationController.cpp">
          <PersistentStrings>
             <PersistentString
@@ -72,10 +75,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Bolts::BFTask&lt;internal::network::Response&gt;::trySetResult(internal::network::Response&amp;):BFTask.hpp">
+         contextName = "common::CommandRunner::processMessage(internal::network::Response&amp;):CommandRunner.cpp">
       </ContextState>
       <ContextState
-         contextName = "cocos2d::untrackRef(cocos2d::Ref*):CCRef.cpp">
+         contextName = "Bolts::BFTask&lt;internal::network::Response&gt;::trySetResult(internal::network::Response&amp;):BFTask.hpp">
       </ContextState>
       <ContextState
          contextName = "UIKit::UINavigationControllerTransitionManager::animateTransition(UIKit::UIViewControllerContextTransitioning*)::$_0::operator()() const:UINavigationController.cpp">
@@ -92,7 +95,7 @@
          contextName = "UIKit::UINavigationController::pushViewController(UIKit::UIViewController*, bool):UINavigationController.cpp">
       </ContextState>
       <ContextState
-         contextName = "common::CommandRunner::processMessage(internal::network::Response&amp;):CommandRunner.cpp">
+         contextName = "cocos2d::untrackRef(cocos2d::Ref*):CCRef.cpp">
       </ContextState>
       <ContextState
          contextName = "UIKit::UINavigationControllerTransitionManager::animateTransition(UIKit::UIViewControllerContextTransitioning*):UINavigationController.cpp">

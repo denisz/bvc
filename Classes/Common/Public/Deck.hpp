@@ -16,19 +16,20 @@
 namespace game {
     class Deck: public game::Object {
     public:
-        void setCards(BVValueMap& cards);
+        void setName();
         void setOwner();
         void getCards();
-        bool containCard(const std::string& card);
         bool isOwnerCurrentUser();
-        void setName();
         std::string localizedName();
+        void setCards(BVValueMap& cards);
+        bool containCard(const std::string& card);
+        
+        void saveEventually();
+        void deleteEventually();
         
         CommandRunner::Handler* saveInBackground();
-        void saveEventually();
-        
         CommandRunner::Handler* deleteInBackground();
-        void deleteEventually();
+        
         
     public:
         static Deck* create();

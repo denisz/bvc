@@ -27,10 +27,10 @@ using namespace common;
 
 class ServiceLocator {
 private:
-    static NetworkClient*       _networkClient;
-    static Storage*             _storage;
     static AwesomeCache*        _cache;
+    static Storage*             _storage;
     static EventuallyRequests*  _eventually;
+    static NetworkClient*       _networkClient;
     static ActionsClient*       _actionsClient;
     
     static bool isCreated;

@@ -40,7 +40,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     ServiceLocator::create();
     
-    const auto starter  = StarterViewController::create();
+//    const auto starter  = StarterViewController::create();
+    const auto starter = TestViewController::create();
     const auto root     = RootViewController::sharedInstance();
     
     root->pushViewController(starter);

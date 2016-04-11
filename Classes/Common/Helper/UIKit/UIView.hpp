@@ -22,7 +22,6 @@ namespace UIKit {
     public:
         virtual bool init();
         virtual bool initWithSize(const cocos2d::Size &contentSize);
-        
         BV_CREATE_FUNC(UIView)
         BV_CREATE_FUNC_WITH_SIZE(UIView);
     };

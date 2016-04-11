@@ -18,19 +18,19 @@ namespace game {
     public:
         class Delegate {
         public:
-            virtual void doAbility() {};
-            virtual void doDialog() {};
             virtual void doPass() {};
+            virtual void doDialog(const internal::BVValueMap &data) {};
+            virtual void doAbility(const internal::BVValueMap &data) {};
         };
         
         struct Trend {
         public:
             enum class Type {CARD, CELL, NONE};
         public:
-            Type type;
             int c;
             int x;
             int y;
+            Type type;
             std::string hash;
         };
         
@@ -39,14 +39,14 @@ namespace game {
             enum class Type {ABILITY, DIALOG, NONE};
         public:
             Type type;
+            bool canPass;
             int abilityId;
-            std::string comment;
-            std::vector<Trend> targets;
-            std::vector<Trend> selectedTargets;
             int minTargets;
             int maxTargets;
-            bool canPass;
+            std::string comment;
             bool canEarlyComplete;
+            std::vector<Trend> targets;
+            std::vector<Trend> selectedTargets;
         };
         
     private:
@@ -57,31 +57,32 @@ namespace game {
         ~AbilityClient();
         
         Delegate* delegate;
-        void addAbility(Ability ability, bool clear = false);
-        void createSessionWithAbility();
-        void clearSession();
         
+        void clearSession();
+        void createSessionWithAbility();
+        void addAbility(Ability ability, bool clear = false);
+
+        bool init();
+        bool pass();
+        bool complete();
         bool card(int cardid);
         bool cell(int x, int y);
-        bool complete();
-        bool pass();
         
-        bool init();
-        
-//        MARK: Implementation InputManager
-        virtual void didTapCard(int cardid, InputManager::CancellationToken& cancel);
-        virtual void didTapCell(int x, int y, InputManager::CancellationToken& cancel);
+//        MARK: Implementation InputManagerEvents
         virtual void didTapPass(InputManager::CancellationToken& cancel);
         virtual void didTapComplete(InputManager::CancellationToken& cancel);
+        virtual void didTapCard(int cardid, InputManager::CancellationToken& cancel);
+        virtual void didTapCell(int x, int y, InputManager::CancellationToken& cancel);
         
     public:
-        static Ability createAbility(const internal::BVValueMap &data);
-        static Ability createAbility(const internal::BVValue &data);
-        static Ability createAbilityFromDialog(const internal::BVValue &dialog);
         static Trend createTrend(const internal::BVValue &data);
         static Trend createTrend(const internal::BVValueMap &data);
-        
-        BV_CREATE_FUNC(AbilityClient);
+        static Ability createAbility(const internal::BVValue &data);
+        static Ability createAbility(const internal::BVValueMap &data);
+        static Ability createAbilityFromDialog(const internal::BVValue &dialog);
+
+        static AbilityClient* create();
+        static AbilityClient* createWithDelegate(Delegate* delegate);
     };
 }
 

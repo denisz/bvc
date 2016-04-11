@@ -25,15 +25,6 @@ namespace game {
     enum class DataSourceControllerOptions {INSERT, RELOAD, UPDATE, DELETE};
     typedef DataSourceControllerOptions DSOptions;
     
-    class DataSourceViewControllerReload {
-    protected:
-        void reloadTableView() {
-            if (reloadCallback) reloadCallback();
-        }
-    public:
-         std::function<void()> reloadCallback;
-    };
-    
     class DataSourceControllerDelegate {
     public:
         virtual void didChange(DataSourceController* ds, DSOptions options, BVValue &value) {};

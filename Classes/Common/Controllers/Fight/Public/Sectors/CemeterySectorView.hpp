@@ -11,11 +11,13 @@
 
 #include "stdafx.h"
 #include "UIKit.h"
+#include "FightCardController.hpp"
 
 namespace game {
-    class CemeterySectorView: public UIKit::UIView {
+    class CemeterySectorView: public UIKit::UIView, public FigthCardAnimatedTransitioning {
     private:
         virtual void viewDidLoad();
+        virtual void animateTransition(FightCardContextTransitioning* transitionContext);
     public:
         BV_CREATE_FUNC_WITH_SIZE(CemeterySectorView);
     };

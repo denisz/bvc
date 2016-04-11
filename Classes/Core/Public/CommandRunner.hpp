@@ -21,27 +21,30 @@ namespace common {
         class Delegate {
             virtual void processResponse(CommandRunner *runner, Response *response) = 0;
         };
-        const int TIMEOUT = 10;
-        typedef Bolts::BFTask<Response> Handler;
-        typedef Bolts::BFTaskCompletionSource<Response> CompletionSource;
         
+        const int TIMEOUT = 10;
+        
+        typedef Bolts::BFTaskCompletionSource<Response> CompletionSource;
+        typedef Bolts::BFTask<Response> Handler;
+        typedef std::vector<CompletionSource*> CompletedCallbacks;
         typedef std::pair<std::string, CompletionSource*> PairCallbacks;
         typedef std::map<const std::string, CompletionSource*> Callbacks;
-        typedef std::vector<CompletionSource*> CompletedCallbacks;
-    private:
-        Reaction* _reaction;
-        bool _subscribed;
         
-        virtual void processMessage(internal::network::Response &res);
-        virtual void processError(internal::network::Response &res);
-        virtual void processClose();
+    private:
+        bool _subscribed;
+        Reaction* _reaction;
+
         virtual void processOpen();
         virtual void didSubscribe();
+        virtual void processClose();
         virtual void didUnsubscribe();
+        virtual void processError(internal::network::Response &res);
+        virtual void processMessage(internal::network::Response &res);
+
+        std::mutex _mutex;
         
         NetworkClient* _networkClient;
         NetworkClient* networkClient();
-        std::mutex _mutex;
         
         Callbacks  _callbacks;
         CompletedCallbacks _completed_callbacks;
@@ -56,6 +59,7 @@ namespace common {
         bool initWithNetworkClient(NetworkClient* netClient);
     public:
         ~CommandRunner();
+        
         Delegate* delegate;
         Handler* runCommandAsync(RequestCommand &command);
         void runCommand(RequestCommand &command);

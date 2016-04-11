@@ -17,8 +17,8 @@ namespace internal {
     public:
         typedef std::function<void()> Message;
     private:
-        std::list<Message>* _UIWsMessageQueue;
         std::mutex   _UIWsMessageQueueMutex;
+        std::list<Message>* _UIWsMessageQueue;
         void _sendMessageToUIThread(Message msg);
         GCD();
     public:

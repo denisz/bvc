@@ -13,14 +13,12 @@ using namespace game;
 using namespace UIKit;
 
 BattleViewController::BattleViewController()
-: battleDelegate(nullptr)
-, _abilityClient(nullptr)
+: _abilityClient(nullptr)
 , _inputManager(nullptr) {
     
 }
 
 BattleViewController::~BattleViewController() {
-    battleDelegate = nullptr;
     CC_SAFE_RELEASE_NULL(_inputManager);
     CC_SAFE_RELEASE_NULL(_abilityClient);
     
@@ -30,11 +28,13 @@ BattleViewController::~BattleViewController() {
 }
 
 bool BattleViewController::init() {
-    if (GameViewController::init()) {
+    if (StepFightViewController::init()) {
         _inputManager  = InputManager::create();
         
-        _abilityClient = AbilityClient::create();
+        _abilityClient = AbilityClient::createWithDelegate(this);
         _inputManager->addDelegate(_abilityClient);
+        
+        //setupLocations();
         
         return true;
     }
@@ -66,6 +66,31 @@ void BattleViewController::viewDidLoad() {
     layout->addChild(btn);
 }
 
+//void BattleViewController::setupLocations() {
+//        
+//}
+
+void BattleViewController::contextCreateCards(ContextFight *context) {
+    GCD::sendMessageToUIThread([&](){
+        std::cout << "----- create cards count --- " << std::to_string(this->context()->db().cards.size()) << std::endl;
+    });
+    
+}
+void BattleViewController::contextUpdateCards(ContextFight *context) {
+    GCD::sendMessageToUIThread([&](){
+        
+        std::cout << "----- cards count --- " << std::to_string(this->context()->db().cards.size()) << std::endl;
+    });
+}
+
+FCAT* BattleViewController::coordinatorForPresentedCard(FightCardController& card) {
+    auto cardLocation = card.location();
+    if (_locations.find(cardLocation) != _locations.end()) {
+        return _locations[cardLocation];
+    }
+    
+    return _locations[FightCardController::Location::Undefined];
+}
 
 void BattleViewController::didTapCard(Ref* sender) {
     _inputManager->didTapCard(10);
@@ -83,16 +108,14 @@ void BattleViewController::didTapComplete(Ref* sender) {
     _inputManager->didTapComplete();
 }
 
-void BattleViewController::doAbility() {
-    auto data = BVValueMap();
-    battleDelegate->handlerRequestAbility(data);
+void BattleViewController::doAbility(const internal::BVValueMap &data) {
+    context()->handlerRequestAbility(data);
 }
 
-void BattleViewController::doDialog() {
-    auto data = BVValueMap();
-    battleDelegate->handlerRequestDialog(data);
+void BattleViewController::doDialog(const internal::BVValueMap &data) {
+    context()->handlerRequestDialog(data);
 }
 
 void BattleViewController::doPass() {
-    battleDelegate->handlerRequestPass();
+    context()->handlerRequestPass();
 }

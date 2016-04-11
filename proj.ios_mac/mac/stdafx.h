@@ -14,9 +14,13 @@
 #include <chrono>
 #include <future>
 #include <thread>
+#include <queue>
+#include <list>
+#include <set>
 #include <map>
 #include <forward_list>
 
+#include "PriorityQueue.h"
 #include "Constants.h"
 #include "Core.h"
 
@@ -34,6 +38,7 @@
 #include "AIRef.h"
 #include "ValueMap.h"
 #include "Error.hpp"
+#include "Observable.h"
 
 //task manager
 #include "ThreadPool.hh"
@@ -41,6 +46,7 @@
 #include "Task.hpp"
 
 #include "Bolts.hpp"
+#include "Instructions.hpp"
 
 #endif /* stdafx_hpp */
 

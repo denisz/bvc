@@ -32,6 +32,9 @@ namespace Geometry {
         struct Point {
             int x = 0;
             int y = 0;
+            cocos2d::Vec2 toVec2() {
+                return cocos2d::Vec2(x, y);
+            }
         };
         
         struct IndexPath {

@@ -10,47 +10,56 @@
 #define BattleViewController_hpp
 
 #include "stdafx.h"
-#include "GameViewController.hpp"
+#include "StepFightViewController.hpp"
 #include "InputManager.hpp"
 #include "AbilityClient.hpp"
 #include "CemeterySectorView.hpp"
 #include "BattlefieldView.hpp"
 #include "AdditionalSectorView.hpp"
+#include "FightCardController.hpp"
 
 namespace game {
-    class BattleViewController: public GameViewController, public AbilityClient::Delegate {
-    public:
-        class Delegate {
-        public:
-            virtual void handlerRequestPass() {};
-            virtual void handlerRequestDialog(const internal::BVValueMap &data) {};
-            virtual void handlerRequestAbility(const internal::BVValueMap &data) {};
-        };
+    class BattleViewController:
+            public StepFightViewController,
+            public AbilityClient::Delegate,
+            public FightCardController::Delegate
+    {
     private:
-        AbilityClient* _abilityClient;
-        InputManager* _inputManager;
         virtual void viewDidLoad();
 
-        BattlefieldView*        _battlefield;
-        CemeterySectorView*     _cemeterySector;
-        AdditionalSectorView*   _additionalSector;
+        InputManager* _inputManager;
+        
+        AbilityClient* _abilityClient;
+        BattlefieldView* _battlefield;
+        CemeterySectorView* _cemeterySector;
+        AdditionalSectorView* _additionalSector;
+        std::map<FightCardController::Location, FCAT*> _locations;
         
         void didTapPass(Ref* sender);
-        void didTapComplete(Ref* sender);
         void didTapCard(Ref* sender);
         void didTapCell(Ref* sender);
+        void didTapComplete(Ref* sender);
         
 //        MARK: Implementation AbilityClientDelegate
-        virtual void doAbility();
-        virtual void doDialog();
+        virtual void doAbility(const internal::BVValueMap &data);
+        virtual void doDialog(const internal::BVValueMap &data);
         virtual void doPass();
         
+//        MARK: IMplementation FightCardControllerDelegate
+        virtual FCAT* coordinatorForPresentedCard(FightCardController& card);
+        
+        void BeginUpdates();
+        void EndUpdates();
+        
+        virtual void contextCreateCards(ContextFight *context);
+        virtual void contextUpdateCards(ContextFight *context);
+        
     public:
-        virtual bool init();
         BattleViewController();
         ~BattleViewController();
-        Delegate* battleDelegate;
-        BV_CREATE_FUNC(BattleViewController);
+        
+        virtual bool init();
+        BV_CREATE_FUNC_WITH_FIGHT_CONTEXT(BattleViewController);
     };
 }
 

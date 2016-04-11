@@ -19,25 +19,25 @@ using namespace internal;
 namespace game {
     class User: public game::Object {
     private:
+        static User* _currentUser;
+        static std::mutex _mutexCurrentUser;
+        static void setCurrentUser(User* user);
         static UserController* userController();
         static CurrentUserController* currentUserController();
-        static std::mutex _mutexCurrentUser;
-        static User* _currentUser;
-        static void setCurrentUser(User* user);    
     public:
         static User* currentUser();
         static CommandRunner::Handler* logInWithUsernameInBackground(const std::string &login, const std::string &password);
         static CommandRunner::Handler* logOutInBackground();
         static CommandRunner::Handler* getAsync(const std::string& profileId);
         
-        CommandRunner::Handler* saveInBackground();
         void saveEventually();
-        CommandRunner::Handler* deleteInBackground();
         void deleteEventually();
-
         
-        const std::string nick() const;
+        CommandRunner::Handler* saveInBackground();
+        CommandRunner::Handler* deleteInBackground();
+        
         const int level() const;
+        const std::string nick() const;
         const std::string avatar() const;
         bool isCurrentUser(User& user);
         

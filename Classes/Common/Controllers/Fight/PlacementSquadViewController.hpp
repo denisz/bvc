@@ -10,26 +10,16 @@
 #define PlacementSquadViewController_hpp
 
 #include "stdafx.h"
-#include "GameViewController.hpp"
+#include "StepFightViewController.hpp"
 
 namespace game {
-    class PlacementSquadViewController: public GameViewController {
+    class PlacementSquadViewController: public StepFightViewController {
     public:
-        class Delegate {
-        public:
-            virtual void handlerRequestPassSelection() {};
-            virtual void handlerRequestSelectionSquad(const BVValueVector &selection) {};
-        };
     private:
         virtual void viewDidLoad();
         void didTapPass(Ref* sender);
     public:
-        virtual bool init();
-        virtual bool initWithResponseGameSetup(Response* res);
-        PlacementSquadViewController();
-        ~PlacementSquadViewController();
-        Delegate* placementDelegate;
-        static PlacementSquadViewController* createWithResponseGameSetup(Response* res);
+        BV_CREATE_FUNC_WITH_FIGHT_CONTEXT(PlacementSquadViewController);
     };
 }
 

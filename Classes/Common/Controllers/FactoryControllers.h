@@ -23,6 +23,10 @@ namespace game {
     class ChooseDeckViewController;
     class PlacementSquadViewController;
     class BattleViewController;
+    
+#ifdef BV_DEBUG
+    class TestViewController;
+#endif
 }
 
 #include "StarterViewController.hpp"
@@ -35,5 +39,10 @@ namespace game {
 #include "RootViewController.hpp"
 #include "FightViewController.hpp"
 //#include "TutorialFightViewController.hpp"
+
+
+#ifdef BV_DEBUG
+#include "TestViewController.hpp"
+#endif
 
 #endif /* FactoryControllers_h */

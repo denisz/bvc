@@ -16,31 +16,27 @@
 namespace UIKit {
     class UIViewControllerContextTransitioning: public internal::AIRef {
     public:
+        enum class Keys{From, To};
         typedef Bolts::BFTaskCompletionSource<Bolts::BFBool> Promise;
     private:
-        UIViewController*   _from;
         UIViewController*   _to;
+        UIViewController*   _from;
+        std::mutex          _mutex;
         Promise*            _promise;
         bool                _completed;
-        std::mutex          _mutex;
     public:
         UIViewControllerContextTransitioning();
         ~UIViewControllerContextTransitioning();
-        enum class Keys{From, To};
-        void setPromise(Promise* promise);
-        void setFromViewController(UIViewController* from);
-        void setToViewController(UIViewController* to);
+
         bool isCompleted();
-        
+        void setToViewController(UIViewController* to);
         void completeTransition(bool didComplete = true);
+        void setFromViewController(UIViewController* from);
         void completeTransitionAsync(bool didComplete = true);
-        Promise* promise();
         
+        Bolts::BFTask<Bolts::BFBool>* task();
         UIView* viewForKey(Keys key);
         UIViewController* viewControllerForKey(Keys key);
-        
-        public:
-        
     };
     
     class UIViewControllerAnimatedTransitioning {

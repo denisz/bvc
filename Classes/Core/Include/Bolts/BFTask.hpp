@@ -30,7 +30,7 @@ namespace Bolts {
         bool _completed;
         std::mutex _mutex;
 
-        std::vector<BFTaskWorker> _callbacks;
+        std::queue<BFTaskWorker> _callbacks;
         bool _isContinue = false;
         T* _result;
         BFError _error;
@@ -68,14 +68,14 @@ namespace Bolts {
     , _cancelled(false)
     , _completed(false)
     , _continueTask(nullptr){
-        _callbacks = std::vector<BFTaskWorker>();
+        //_callbacks = std::vector<BFTaskWorker>();
     }
 
     template<class T>
     BFTask<T> ::~BFTask() {
         CC_SAFE_RELEASE_NULL(_result);
         CC_SAFE_RELEASE_NULL(_continueTask);
-        _callbacks.clear();
+        //_callbacks.clear();
     }
     
     template<class T>
@@ -136,13 +136,9 @@ namespace Bolts {
         //вернуть новый таск
         completed = isCompleted();
         if (!completed) {
-            _callbacks.push_back(std::bind(&BFTask<T>::worker, this, block));
-        }
-        
-        _mutex.unlock();
-        
-        if (completed) {
-            CC_SAFE_RETAIN(this);
+            _callbacks.push(std::bind(&BFTask<T>::worker, this, block));
+        } else {
+            retain();
             worker(block);
         }
         
@@ -199,8 +195,7 @@ namespace Bolts {
                     _ct->trySetError(error);
                 }
             }
-            
-            CC_SAFE_RELEASE(task);
+            task->release();
         };
         
         if (resultTask != nullptr) {
@@ -225,10 +220,10 @@ namespace Bolts {
             return false;
         }
 
+        result.retain();
+        
         _completed = true;
         _result = &result;
-        
-        CC_SAFE_RETAIN(&result);
         
         runContinuations();
         return true;
@@ -257,12 +252,11 @@ namespace Bolts {
     void BFTask<T> ::runContinuations() {
         auto pool = BFExecutor::defaultExecutor()->pool();
         
-        for (auto worker: _callbacks) {
-            CC_SAFE_RETAIN(this);
-            pool->addTask(worker);
+        while(!_callbacks.empty()) {
+            retain();
+            pool->addTask(_callbacks.front());
+            _callbacks.pop();
         }
-        
-        _callbacks.clear();
     }
 }
 

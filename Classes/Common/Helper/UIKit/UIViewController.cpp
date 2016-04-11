@@ -29,7 +29,9 @@ time_t UIViewControllerTransitionManager::transitionDuration(UIViewControllerCon
 UIViewControllerContextTransitioning::UIViewControllerContextTransitioning()
 : _promise(nullptr)
 , _from(nullptr)
-, _to(nullptr){}
+, _to(nullptr){
+    _promise = Promise::taskCompletionSource();
+}
 
 UIViewControllerContextTransitioning::~UIViewControllerContextTransitioning() {
     CC_SAFE_RELEASE_NULL(_promise);
@@ -47,36 +49,27 @@ void UIViewControllerContextTransitioning::setToViewController(UIViewController*
     _to = to;
 }
 
-void UIViewControllerContextTransitioning::setPromise(Promise* promise) {
-    CC_SAFE_RETAIN(promise);
-    _promise = promise;
-}
-
-UIViewControllerContextTransitioning::Promise* UIViewControllerContextTransitioning::promise() {
-    return _promise;
+Bolts::BFTask<Bolts::BFBool>* UIViewControllerContextTransitioning::task() {
+    return _promise->task();
 }
 
 void UIViewControllerContextTransitioning::completeTransition(bool didComplete) {
     std::lock_guard<std::mutex> lock(_mutex);
     
     if (_completed == false) {
-        auto promise = this->promise();
         auto result  = new Bolts::BFBool(didComplete);
         CC_SAFE_DEFRREDRELEASE(result);
-        promise->trySetResult(*result);
+        if (_promise != nullptr)
+        _promise->trySetResult(*result);
         _completed = true;
     }
 }
-
-
 
 void UIViewControllerContextTransitioning::completeTransitionAsync(bool didComplete) {
     CC_SAFE_RETAIN(this);
     completeTransition(didComplete);
     
     std::thread([this](){
-//        usleep(100);
-        sleep(1);
         CC_SAFE_RELEASE(this);
     }).detach();
 }
@@ -209,20 +202,17 @@ void UIViewController::setTransition(UIViewControllerTransitioningDelegate* tran
  })*/
 
 UIViewController::Completion* UIViewController::presentViewController(UIViewController* viewController, bool animated) {
-    auto promise = UIViewControllerContextTransitioning::Promise::taskCompletionSource();
-    CC_SAFE_DEFRREDRELEASE(promise);
     
-    auto task       = promise->task();
     auto presented  = viewController;
     auto presenting = this;
     auto source     = this;
 
     auto context = new UIViewControllerContextTransitioning();
+    auto task       = context->task();
     CC_SAFE_AUTORELEASE(context);
     
     context->setFromViewController(presenting);
     context->setToViewController(presented);
-    context->setPromise(promise);
     
     this->showViewController(viewController);
     
@@ -239,19 +229,15 @@ UIViewController::Completion* UIViewController::presentViewController(UIViewCont
 }
 
 UIViewController::Completion* UIViewController::dismissViewControllerAnimated(bool animated) {
-    auto promise = UIViewControllerContextTransitioning::Promise::taskCompletionSource();
-    CC_SAFE_DEFRREDRELEASE(promise);
-    
-    auto task       = promise->task();
     auto presented  = this;
     auto presenting = this->_presentingViewController;
     
     auto context    = new UIViewControllerContextTransitioning();
+    auto task       = context->task();
     CC_SAFE_AUTORELEASE(context);
     
     context->setFromViewController(presenting);
     context->setToViewController(presented);
-    context->setPromise(promise);
     
     if (_transitioningDelegate != nullptr && animated == true) {
         auto animator   = _transitioningDelegate->animationControllerForDismissedController(this);

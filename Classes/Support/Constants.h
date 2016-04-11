@@ -49,6 +49,41 @@ const int kCachePolicyNetworkElseCache = 4;
  */
 const int kCachePolicyCacheThenNetwork = 5;
 
+enum class kGameStage {
+    /** Инициализация игры */   INIT,
+    /** Во время муллиганов   */  MULLIGAN,
+    /** Во время броска кубиков на очерёдность хода */  DICETURN,
+    /**Выбор отряда*/  CHOOSEARMY,
+    /**Расстановка отряда*/  SETUPARMY,
+    /**Вскрытие скрытых карт (кроме 3 ряда)*/  UNHIDE,
+    /**Во время рассадки экипировки */  EQUIPMENT,
+    /**В начале игры */  BEGINGAME,
+    /**До начала хода (и до открытия карт) */   BEFORETURN,
+    /**В начале хода */  BEGINTURN,
+    /**В течение хода (медленные действия) */  TURN,
+    /**После объявления действия (реакция) */  DECLARE,
+    /**Объявление цели атаки */  TARGET,
+    /**При нападении */  ASSAULT,
+    /**Броски кубиков */  DICES,
+    /**Нанесение ударов */  KICKS,
+    /**Нанесение одного отдельно взятого удара */  KICK,
+    /**Нанесение ран  */  DAMAGE,
+    /**После нанесения ран */  AFTERDAMAGE,
+    /**Перемещение карты на кладбище */  DEATH,
+    /**После смерти */  AFTERDEATH,
+    /**После атаки */  AFTERATTACK,
+    /**До открытия */  UNTAP,
+    /**При излечении */  HEALING,
+    /**После закрытия карты */  AFTERTAP,
+    /**После открытия  */  AFTERUNTAP,
+    /**После движения  */ AFTERDISPLACEMENT,
+     /**После вызова */  AFTERSUMMON,
+    /**После инкарнации  */  AFTERINCARNATION,
+    /**В конце хода */  AFTERTURN,
+    /**В конце игры */  ENDGAME
+};
+
+
 const std::string kHiddenUserName   = "Hidden";
 const std::string kHiddenUserAvatar = "Hidden";
 

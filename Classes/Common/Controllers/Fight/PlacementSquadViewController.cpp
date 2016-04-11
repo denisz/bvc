@@ -12,37 +12,6 @@ USING_NS_CC;
 using namespace game;
 using namespace UIKit;
 
-PlacementSquadViewController::PlacementSquadViewController()
-: placementDelegate(nullptr){
-    
-}
-
-PlacementSquadViewController::~PlacementSquadViewController() {
-    placementDelegate = nullptr;
-}
-
-PlacementSquadViewController* PlacementSquadViewController::createWithResponseGameSetup(Response* res) {
-    auto ref = new PlacementSquadViewController();
-    if (ref->initWithResponseGameSetup(res)) {
-        return ref;
-    }
-    
-    CC_SAFE_DELETE(ref);
-    return nullptr;
-}
-
-bool PlacementSquadViewController::initWithResponseGameSetup(Response* res) {
-    return init();
-}
-
-bool PlacementSquadViewController::init() {
-    if (GameViewController::init()) {
-        return true;
-    }
-    
-    return false;
-}
-
 void PlacementSquadViewController::viewDidLoad() {
     auto layout = ui::RelativeBox::create();
     layout->setPosition(Vec2::ZERO);
@@ -60,7 +29,7 @@ void PlacementSquadViewController::viewDidLoad() {
     btn->setContentSize(Size(250, 50));
     btn->setTitleFontSize(24);
     btn->setTitleFontName("fonts/font.fnt");
-    btn->setTitleText("Next battle");
+    btn->setTitleText("FIGHT");
     
     btn->addClickEventListener(BV_CALLBACK_1(PlacementSquadViewController::didTapPass, this));
     
@@ -68,7 +37,5 @@ void PlacementSquadViewController::viewDidLoad() {
 }
 
 void PlacementSquadViewController::didTapPass(Ref* sender) {
-    if (placementDelegate != nullptr) {
-        placementDelegate->handlerRequestPassSelection();
-    }
+    context()->handlerRequestPassSelection();
 }

@@ -15,8 +15,6 @@
 namespace game {
     class TutorialFightViewController: public FightViewController {
     protected:
-        bool commandGameTutorial(Response* res);
-        virtual bool validResponseCommand(Response* res);
         virtual bool init();
     public:
         

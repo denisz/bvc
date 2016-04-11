@@ -28,9 +28,11 @@ namespace game {
         std::mutex _mutex;
     public:
         ~Object();
-        bool containsKey(const std::string &key) const;
-        const std::string objectId() const;
+        
+        const std::string hash() const;
         const int objectIdAsInt() const;
+        const std::string objectId() const;
+        bool containsKey(const std::string &key) const;
         
         const BVValue valueForKey(const std::string &key, const int defVal) const;
         const BVValue valueForKey(const std::string &key, const std::string &defVal) const;
@@ -45,8 +47,6 @@ namespace game {
         void mergeFromServer(const BVValueMap &newData,  bool clear = false);
         
         BVValueMap* data();
-        
-        const std::string hash() const;
 
         bool operator== (const Object& v);
         

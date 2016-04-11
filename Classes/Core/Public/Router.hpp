@@ -16,11 +16,12 @@ using namespace internal::network;
 
 namespace common {
     const std::string PATH_GLOBAL = "*";
+    const std::string PATH_ERROR  = "exception";
     
     class Router: public internal::AIRef {
     public:
         typedef std::function<bool(internal::network::Response*)> Handler;
-        typedef std::vector<Handler> HandlerList;
+        typedef std::list<Handler> HandlerList;
         typedef std::map<std::string, HandlerList> Handlers;
     private:
         class Delegate {
@@ -47,6 +48,7 @@ namespace common {
         
         void process(internal::network::Response& res);
         void error(internal::network::Response& res);
+        void exception(Response& res, Error& error);
         
         void pause();
         void resume();
